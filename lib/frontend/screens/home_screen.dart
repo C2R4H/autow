@@ -6,8 +6,13 @@ import 'add_post_screen.dart';
 import 'account_screen.dart';
 
 import '../widgets/post_half_widget.dart';
+import '../../backend/services/cache.dart';
+import '../../midend/user_profile.dart';
 
 class home_screen extends StatefulWidget {
+  bool? authState;
+  String? userProfile;
+  home_screen({this.authState,this.userProfile});
   @override
   home_screen_state createState() => home_screen_state();
 }
@@ -16,6 +21,19 @@ class home_screen_state extends State<home_screen> {
   @override
   Widget build(BuildContext context) {
     var scaffoldKey = GlobalKey<ScaffoldState>();
+    String username = "";
+
+    checkState() async {
+      if(widget.userProfile!=null){
+        username = widget.userProfile!;
+      }
+      widget.authState = await CacheMethods.getCachedUserLoggedInState();
+    }
+
+    void initState(){
+      checkState();
+      super.initState();
+    }
 
     double screen_height = MediaQuery.of(context).size.height;
     double screen_width = MediaQuery.of(context).size.width;
@@ -39,7 +57,7 @@ class home_screen_state extends State<home_screen> {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      'Stratulat Cristian',
+                      widget.userProfile!,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -96,10 +114,11 @@ class home_screen_state extends State<home_screen> {
                 ),
               ),
               ListTile(
-                onTap: () {
+                onTap: () async {
+                  await checkState();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => settings_screen()),
+                    MaterialPageRoute(builder: (context) => settings_screen(authState: widget.authState)),
                   );
                 },
                 leading: Icon(

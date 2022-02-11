@@ -5,6 +5,7 @@ import '../../backend/services/authentication.dart';
 import '../widgets/alertdialog.dart';
 
 import 'login_screen.dart';
+import '../screen_controller.dart';
 
 class register_screen extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class register_screen extends StatefulWidget {
 
 class register_screen_state extends State<register_screen> {
   bool _passwordVisible = false;
+  bool isLoading = false;
 
   final formKey = GlobalKey<FormState>();
 
@@ -46,11 +48,15 @@ class register_screen_state extends State<register_screen> {
   }
 
   void registerFunction(context) async {
+    setState((){
+      isLoading = true;
+    });
     if (formKey.currentState!.validate() && register) {
       print('working');
      if(await authMethods.registerEmailAndPassword(
-          emailTextController.text, passwordTextController.text,context)){
-      Navigator.pop(context);
+          emailTextController.text, passwordTextController.text,context,usernameTextController.text)){
+       int count = 0;
+      Navigator.of(context).popUntil((_) => count++ >= 2);
      }else{
       showDialog(
           context: context,
@@ -59,6 +65,9 @@ class register_screen_state extends State<register_screen> {
           );
     }
     }
+    setState((){
+      isLoading = false;
+    });
   }
 
   @override
@@ -217,7 +226,7 @@ class register_screen_state extends State<register_screen> {
                 child: Container(
                   alignment: Alignment.center,
                   width: screen_width,
-                  child: Text(
+                  child: isLoading ? CircularProgressIndicator.adaptive(backgroundColor: Colors.white) : Text(
                     'Register',
                     style: TextStyle(
                       color: Colors.white,

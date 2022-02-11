@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../backend/services/authentication.dart';
+import '../midend/user_profile.dart';
 
 import 'screens/home_screen.dart';
 import 'screens/favorites_screen.dart';
@@ -16,13 +17,24 @@ class screen_controller extends StatefulWidget {
 class screen_controller_state extends State<screen_controller> {
 
   AuthMethods authMethods = AuthMethods();
+  UserProfile userProfile = UserProfile();
 
   PageController _myPage = PageController(initialPage: 0);
   int _selectedIndex = 0;
+  bool isAuthenticated = false;
+  bool isLoading = false;
 
-
-  void checkIfAuthenticated() async {
-    print(await authMethods.isUserAuthenticated());
+  checkState() async {
+    setState((){
+      isLoading=true;
+    });
+    isAuthenticated = await authMethods.isUserAuthenticated();
+    bool? successful = await userProfile.getData();
+    if(successful! && userProfile.username!=""){
+      setState((){
+        isLoading=false;
+      });
+    }
   }
 
   void _onItemTapped(int index){
@@ -35,7 +47,6 @@ class screen_controller_state extends State<screen_controller> {
     else if(index==1)
       _myPage.jumpToPage(1);
     else if(index==2){
-      checkIfAuthenticated();
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => add_post_screen()),
@@ -47,15 +58,21 @@ class screen_controller_state extends State<screen_controller> {
       _myPage.jumpToPage(4);
   }
 
-  void initState(){
-    checkIfAuthenticated();
+  void initState() {
+    checkState();
     super.initState();
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading ? Container(
+        child: Center(
+            child: CircularProgressIndicator.adaptive(
+                backgroundColor: Colors.white,
+                ),
+            ),
+        ) : Scaffold(
       /*bottomNavigationBar: BottomAppBar(
         color: Color(0xff212121),
         child: Row(
@@ -137,10 +154,12 @@ class screen_controller_state extends State<screen_controller> {
         controller: _myPage,
         physics: NeverScrollableScrollPhysics(),
         onPageChanged: (int) {
-          print('Page has changed to index $int');
         },
         children: [
-          home_screen(),
+          home_screen(
+              authState: isAuthenticated,
+              userProfile: userProfile.username,
+              ),
           favorites_screen(),
           add_post_screen(),
           messages_screen(),

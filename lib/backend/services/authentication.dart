@@ -4,28 +4,30 @@ import 'cache.dart';
 import '../../frontend/widgets/alertdialog.dart';
 
 class AuthMethods {
-  CacheMethods cacheMethods = CacheMethods();
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<bool?> isUserAuthenticated() async {
-    bool result = false;
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        result = false;
-      } else {
-        result = true;
-      }
-    });
-    return result;
+  Future<bool> isUserAuthenticated() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if(user!=null){
+      return true;
+    }
+    return false;
   }
 
-  Future<bool> registerEmailAndPassword(String email, String password,context) async {
+  Future<bool> registerEmailAndPassword(String email, String password,context,String username) async {
     bool successful= false;
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       if(userCredential!=null){
-        print(userCredential.toString());
+        User user = userCredential.user!;
+        user.updateDisplayName(username);
+
+        CacheMethods.cacheUserLoggedInState(true);
+        CacheMethods.cacheUsernameState(username);
+        CacheMethods.cacheUserEmailState(email);
+
+        print('Registered successfuly \: \n email: $email \n username: $username \n\n');
         successful = true;
       }
     } on FirebaseAuthException catch (e) {
@@ -63,6 +65,7 @@ class AuthMethods {
 
   Future logout() async {
     try{
+      CacheMethods.cacheUserLoggedInState(false);
       return await auth.signOut();
     }catch(e){
       print(e.toString());

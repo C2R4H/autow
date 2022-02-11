@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.autow">
    <application
-        android:label="autow"
+        android:label="AutoW"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

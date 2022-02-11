@@ -12,7 +12,7 @@ class CacheMethods{
   }
 
   //Caching the username
-  static Future<bool> cacheUserNameState(String username) async {
+  static Future<bool> cacheUsernameState(String username) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.setString(cacheUserNameKey, username);
   }
@@ -34,7 +34,7 @@ class CacheMethods{
   }
 
   //Retrieving the username
-  static Future<String?> getCachedUserNameState() async {
+  static Future<String?> getCachedUsernameState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.getString(cacheUserNameKey);
   }

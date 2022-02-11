@@ -3,8 +3,29 @@ import 'package:flutter/material.dart';
 //Screens
 import 'login_screen.dart';
 import 'signup_screen.dart';
+import '../screen_controller.dart';
 
-class settings_screen extends StatelessWidget {
+import '../../backend/services/authentication.dart';
+import '../../backend/services/cache.dart';
+
+class settings_screen extends StatefulWidget {
+  bool? authState;
+  settings_screen({this.authState});
+  @override
+  settings_screen_state createState() => settings_screen_state();
+}
+
+class settings_screen_state extends State<settings_screen> {
+  AuthMethods authMethods = AuthMethods();
+
+  checkState() async {
+    widget.authState = await CacheMethods.getCachedUserLoggedInState();
+  }
+
+  void initState(){
+    checkState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double screen_width = MediaQuery.of(context).size.width;
@@ -21,11 +42,15 @@ class settings_screen extends StatelessWidget {
             Material(
               child: InkWell(
                 onTap: () {
-                  Navigator.push(
+                  if (widget.authState!) {
+                      authMethods.logout();
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => login_screen()),
-                      );
-                  print("Login Screen");
+                    );
+                  }
                 },
                 child: Ink(
                   decoration: BoxDecoration(
@@ -43,7 +68,7 @@ class settings_screen extends StatelessWidget {
                   height: 50,
                   child: Center(
                     child: Text(
-                      'Log In',
+                      widget.authState! ? 'Logout' : 'Log In',
                       style: TextStyle(
                         color: Color(0xffFF7171),
                       ),
