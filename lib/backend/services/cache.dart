@@ -4,6 +4,7 @@ class CacheMethods{
   static String cacheUserLoggedInKey = "ISLOGGEDIN";
   static String cacheUserNameKey = "USERNAMEKEY";
   static String cacheUserEmailKey = "USEREMAILKEY";
+  static String cacheProfilePictureKey = "USERPROFILEPICTUREKEY";
 
   //We save a bool variable that will say if the user is logged in or not
   static Future<bool> cacheUserLoggedInState(bool isLoggedIn) async {
@@ -23,6 +24,11 @@ class CacheMethods{
     return prefs.setString(cacheUserEmailKey, email);
   }
 
+  static Future<bool> cacheProfilePictureURL(String downloadURL) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setString(cacheProfilePictureKey, downloadURL);
+  }
+
   //
   //Retrieving data from the cache
   //
@@ -30,18 +36,23 @@ class CacheMethods{
   //Retrieving the bool logged in state
   static Future<bool?> getCachedUserLoggedInState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getBool(cacheUserLoggedInKey);
+    return prefs.getBool(cacheUserLoggedInKey);
   }
 
   //Retrieving the username
   static Future<String?> getCachedUsernameState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getString(cacheUserNameKey);
+    return prefs.getString(cacheUserNameKey);
   }
 
   //Retrieving the email
   static Future<String?> getCachedUserEmailState() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return await prefs.getString(cacheUserEmailKey);
+    return prefs.getString(cacheUserEmailKey);
+  }
+
+  static Future<String?> getCachedProfilePictureURL() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(cacheProfilePictureKey);
   }
 }

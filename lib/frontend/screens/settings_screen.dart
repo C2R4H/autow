@@ -40,10 +40,9 @@ class settings_screen_state extends State<settings_screen> {
             SizedBox(height: 10),
             Material(
               child: InkWell(
-                onTap: () {
+                onTap: () async {
                   if (widget.authState!) {
-                    authMethods.logout();
-                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    await authMethods.logout();
                     Navigator.pushReplacement(
                       context,
                       PageRouteBuilder(

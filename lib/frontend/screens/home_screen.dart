@@ -11,14 +11,13 @@ import '../../midend/user_profile.dart';
 
 class home_screen extends StatefulWidget {
   bool? authState;
-  String? userProfile;
+  UserProfile? userProfile;
   home_screen({this.authState, this.userProfile});
   @override
   home_screen_state createState() => home_screen_state();
 }
 
 class home_screen_state extends State<home_screen> {
-  UserProfile userProfile = UserProfile();
   String username = '';
 
   /*checkState() async {
@@ -31,7 +30,7 @@ class home_screen_state extends State<home_screen> {
 
   @override
   void initState() {
-    username = widget.userProfile!;
+    username = widget.userProfile!.username!;
     super.initState();
   }
 
@@ -56,8 +55,16 @@ class home_screen_state extends State<home_screen> {
                 child: Row(
                   children: [
                     CircleAvatar(
+                      backgroundImage: widget.userProfile!.profileImage == "" ? null : NetworkImage(widget.userProfile!.profileImage!),
                       backgroundColor: Color(0xff424242),
                       radius: 40,
+                      child: widget.userProfile!.profileImage! == "" ? Text(
+                          username[0],
+                          style:TextStyle(
+                              color: Colors.white,
+                              fontSize: screen_height/20,
+                              ),
+                          ) : null ,
                     ),
                     SizedBox(width: 10),
                     Text(
@@ -81,7 +88,7 @@ class home_screen_state extends State<home_screen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => account_screen()),
+                      MaterialPageRoute(builder: (context) => account_screen(userProfile: widget.userProfile)),
                     );
                   },
                   child: ListTile(

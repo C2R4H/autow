@@ -9,20 +9,32 @@ class UserProfile {
 
   String? username = "";
   String? email = "";
+  String? profileImage = "";
 
   Future<bool?> getData() async {
     username = await CacheMethods.getCachedUsernameState();
     email = await CacheMethods.getCachedUserEmailState();
-    if (username == "") {
+    profileImage = await CacheMethods.getCachedProfilePictureURL();
+    if (username == "" || email == "" || profileImage == "") {
       User? user = authMethods.auth.currentUser;
       if (user != null) {
         username = user.displayName.toString();
         email = user.email.toString();
+        if(user.photoURL.toString()!="null"){
+          profileImage = user.photoURL.toString();
+        }
       }else{
         username = "AutoW";
         email = "AutoW";
       }
     }
   return true;
+  }
+
+  Future uploadProfilePictureURL(String downloadURL) async {
+    User? user = authMethods.auth.currentUser;
+    await CacheMethods.cacheProfilePictureURL(downloadURL);
+    await user!.updatePhotoURL(downloadURL);
+    profileImage = downloadURL;
   }
 }

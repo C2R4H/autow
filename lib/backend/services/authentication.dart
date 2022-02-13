@@ -84,6 +84,7 @@ class AuthMethods {
       CacheMethods.cacheUserLoggedInState(false);
       CacheMethods.cacheUsernameState("");
       CacheMethods.cacheUserEmailState("");
+      CacheMethods.cacheProfilePictureURL("");
       return await auth.signOut();
     } catch (e) {
       print(e.toString());

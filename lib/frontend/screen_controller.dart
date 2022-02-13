@@ -162,7 +162,7 @@ class screen_controller_state extends State<screen_controller> {
         children: [
           home_screen(
               authState: isAuthenticated,
-              userProfile: userProfile.username,
+              userProfile: userProfile,
               ),
           favorites_screen(),
           add_post_screen(),
