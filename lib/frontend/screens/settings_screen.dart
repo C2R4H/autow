@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 //Screens
 import 'login_screen.dart';
-import 'signup_screen.dart';
 import '../screen_controller.dart';
 
 import '../../backend/services/authentication.dart';
@@ -22,7 +21,7 @@ class settings_screen_state extends State<settings_screen> {
     widget.authState = await CacheMethods.getCachedUserLoggedInState();
   }
 
-  void initState(){
+  void initState() {
     checkState();
   }
 
@@ -43,8 +42,16 @@ class settings_screen_state extends State<settings_screen> {
               child: InkWell(
                 onTap: () {
                   if (widget.authState!) {
-                      authMethods.logout();
-                    Navigator.pop(context);
+                    authMethods.logout();
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.pushReplacement(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation1, animation2) =>
+                            screen_controller(),
+                        transitionDuration: Duration(seconds: 0),
+                      ),
+                    );
                   } else {
                     Navigator.push(
                       context,

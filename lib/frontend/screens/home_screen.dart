@@ -12,28 +12,32 @@ import '../../midend/user_profile.dart';
 class home_screen extends StatefulWidget {
   bool? authState;
   String? userProfile;
-  home_screen({this.authState,this.userProfile});
+  home_screen({this.authState, this.userProfile});
   @override
   home_screen_state createState() => home_screen_state();
 }
 
 class home_screen_state extends State<home_screen> {
+  UserProfile userProfile = UserProfile();
+  String username = '';
+
+  /*checkState() async {
+    await userProfile.getData();
+    setState(() {
+      username = userProfile.username!;
+    });
+    widget.authState = await CacheMethods.getCachedUserLoggedInState();
+  }*/
+
+  @override
+  void initState() {
+    username = widget.userProfile!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var scaffoldKey = GlobalKey<ScaffoldState>();
-    String username = "";
-
-    checkState() async {
-      if(widget.userProfile!=null){
-        username = widget.userProfile!;
-      }
-      widget.authState = await CacheMethods.getCachedUserLoggedInState();
-    }
-
-    void initState(){
-      checkState();
-      super.initState();
-    }
 
     double screen_height = MediaQuery.of(context).size.height;
     double screen_width = MediaQuery.of(context).size.width;
@@ -57,7 +61,7 @@ class home_screen_state extends State<home_screen> {
                     ),
                     SizedBox(width: 10),
                     Text(
-                      widget.userProfile!,
+                      username,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -71,67 +75,94 @@ class home_screen_state extends State<home_screen> {
                 height: 1,
                 color: Color(0xff424242),
               ),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => account_screen()),
-                  );
-                },
-                leading: Icon(
-                  Icons.person_outlined,
-                  color: Color(0xffBABABA),
-                  size: screen_height / 25,
-                ),
-                title: Text(
-                  'My account',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white,
-                    fontSize: screen_height / 35,
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => account_screen()),
+                    );
+                  },
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.person_outlined,
+                      color: Color(0xffBABABA),
+                      size: screen_height / 25,
+                    ),
+                    title: Text(
+                      'My account',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                        fontSize: screen_height / 35,
+                      ),
+                    ),
                   ),
                 ),
               ),
-              ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => add_post_screen()),
-                  );
-                },
-                leading: Icon(
-                  Icons.add_box,
-                  color: Color(0xffBABABA),
-                  size: screen_height / 25,
-                ),
-                title: Text(
-                  'Add a post',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white,
-                    fontSize: screen_height / 35,
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => add_post_screen()),
+                    );
+                  },
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.add_box,
+                      color: Color(0xffBABABA),
+                      size: screen_height / 25,
+                    ),
+                    title: Text(
+                      'Add a post',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                        fontSize: screen_height / 35,
+                      ),
+                    ),
                   ),
                 ),
               ),
-              ListTile(
-                onTap: () async {
-                  await checkState();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => settings_screen(authState: widget.authState)),
-                  );
-                },
-                leading: Icon(
-                  Icons.settings,
-                  color: Color(0xffBABABA),
-                  size: screen_height / 25,
-                ),
-                title: Text(
-                  'Settings',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w300,
-                    color: Colors.white,
-                    fontSize: screen_height / 35,
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => add_post_screen()),
+                    );
+                  },
+                  child: ListTile(
+                    onTap: () async {
+                      await CacheMethods.getCachedUserLoggedInState()
+                          .then((value) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  settings_screen(authState: value)),
+                        );
+                      });
+                    },
+                    leading: Icon(
+                      Icons.settings,
+                      color: Color(0xffBABABA),
+                      size: screen_height / 25,
+                    ),
+                    title: Text(
+                      'Settings',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                        fontSize: screen_height / 35,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -142,7 +173,7 @@ class home_screen_state extends State<home_screen> {
       appBar: AppBar(
         automaticallyImplyLeading:
             false, // this will hide Drawer hamburger icon
-        toolbarHeight: MediaQuery.of(context).size.height/6,
+        toolbarHeight: MediaQuery.of(context).size.height / 6,
         flexibleSpace: Container(
           padding: EdgeInsets.symmetric(horizontal: 15),
           color: Color(0xff212121),

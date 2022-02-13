@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../backend/services/authentication.dart';
+import '../backend/services/cache.dart';
 import '../midend/user_profile.dart';
 
 import 'screens/home_screen.dart';
@@ -28,9 +29,12 @@ class screen_controller_state extends State<screen_controller> {
     setState((){
       isLoading=true;
     });
-    isAuthenticated = await authMethods.isUserAuthenticated();
+    await authMethods.isUserAuthenticated().then((value){
+      isAuthenticated = value;
+      CacheMethods.cacheUserLoggedInState(isAuthenticated);
+    });
     bool? successful = await userProfile.getData();
-    if(successful! && userProfile.username!=""){
+    if(successful!){
       setState((){
         isLoading=false;
       });

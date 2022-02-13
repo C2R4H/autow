@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../../backend/services/authentication.dart';
+import '../widgets/alertdialog.dart';
+
 import 'register_screen.dart';
+import '../screen_controller.dart';
 
 class login_screen extends StatefulWidget {
   @override
@@ -9,14 +13,22 @@ class login_screen extends StatefulWidget {
 
 class login_screen_state extends State<login_screen> {
   bool _passwordVisible = false;
+  bool isLoading = false;
 
   final formKey = GlobalKey<FormState>();
+  AuthMethods authMethods = AuthMethods();
 
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
 
-  errorFunction(){
-    print("error");
+  bool login = false;
+
+  errorFunction() {
+    login = false;
+  }
+
+  successfulFunction() {
+    login = true;
   }
 
   @override
@@ -32,12 +44,34 @@ class login_screen_state extends State<login_screen> {
     super.dispose();
   }
 
-  login_function() async {
-    if(formKey.currentState!.validate()){
+  void login_function() async {
+    setState(() {
+      isLoading = true;
+    });
+    if (formKey.currentState!.validate() && login) {
+      if (await authMethods.loginWithEmailAndPassword(
+          emailTextController.text, passwordTextController.text)) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                screen_controller(),
+            transitionDuration: const Duration(seconds: 0),
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => errorDialog(context),
+          barrierDismissible: false,
+        );
+      }
     }
+    setState(() {
+      isLoading = false;
+    });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +118,11 @@ class login_screen_state extends State<login_screen> {
                       ),
                       child: TextFormField(
                         validator: (String? value) {
-                          return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value!) ? null : errorFunction();
+                          return RegExp(
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(value!)
+                              ? successfulFunction()
+                              : errorFunction();
                         },
                         autofillHints: [AutofillHints.email],
                         controller: emailTextController,
@@ -113,7 +151,9 @@ class login_screen_state extends State<login_screen> {
                       ),
                       child: TextFormField(
                         validator: (val) {
-                          return val!.length > 6 ? null : errorFunction();
+                          return val!.length > 6
+                              ? successfulFunction()
+                              : errorFunction();
                         },
                         controller: passwordTextController,
                         obscureText: !_passwordVisible,
@@ -181,15 +221,18 @@ class login_screen_state extends State<login_screen> {
                 child: Container(
                   alignment: Alignment.center,
                   width: screen_width,
-                  child: Text(
-                    'Log In',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: isLoading
+                      ? const CircularProgressIndicator.adaptive(
+                          backgroundColor: Colors.white)
+                      : const Text(
+                          'Log In',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               SizedBox(
                 height: MediaQuery.of(context).viewInsets.bottom,
               ),
@@ -199,24 +242,25 @@ class login_screen_state extends State<login_screen> {
                 height: 1,
               ),
               Flexible(
-                  flex: 1,
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
+                flex: 1,
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => register_screen()),
-                        );
-                  },
-                  child: Text(
-                    'Don\'t have an account ? Sign Up',
-                    style: TextStyle(
-                      color: Colors.white,
+                        MaterialPageRoute(
+                            builder: (context) => register_screen()),
+                      );
+                    },
+                    child: Text(
+                      'Don\'t have an account ? Sign Up',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
               ),
             ],
           ),

@@ -14,10 +14,13 @@ class UserProfile {
     username = await CacheMethods.getCachedUsernameState();
     email = await CacheMethods.getCachedUserEmailState();
     if (username == "") {
-      User? user = await authMethods.auth.currentUser;
+      User? user = authMethods.auth.currentUser;
       if (user != null) {
-        String name = await user.displayName.toString();
-        String email = await user.email.toString();
+        username = user.displayName.toString();
+        email = user.email.toString();
+      }else{
+        username = "AutoW";
+        email = "AutoW";
       }
     }
   return true;

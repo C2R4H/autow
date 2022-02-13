@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../backend/services/authentication.dart';
 import '../widgets/alertdialog.dart';
@@ -52,11 +51,16 @@ class register_screen_state extends State<register_screen> {
       isLoading = true;
     });
     if (formKey.currentState!.validate() && register) {
-      print('working');
      if(await authMethods.registerEmailAndPassword(
           emailTextController.text, passwordTextController.text,context,usernameTextController.text)){
-       int count = 0;
-      Navigator.of(context).popUntil((_) => count++ >= 2);
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation1, animation2) =>
+                screen_controller(),
+            transitionDuration: const Duration(seconds: 0),
+          ),
+        );
      }else{
       showDialog(
           context: context,
