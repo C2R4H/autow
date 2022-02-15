@@ -21,7 +21,7 @@ class AuthMethods {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
       if (userCredential != null) {
-        User user = userCredential.user!;
+        User user = auth.currentUser!;
         user.updateDisplayName(username);
 
         CacheMethods.cacheUserLoggedInState(true);

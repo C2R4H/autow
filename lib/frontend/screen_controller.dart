@@ -26,14 +26,18 @@ class screen_controller_state extends State<screen_controller> {
   bool isLoading = false;
 
   checkState() async {
+    bool? successful = false;
     setState((){
       isLoading=true;
     });
-    await authMethods.isUserAuthenticated().then((value){
+    await authMethods.isUserAuthenticated().then((value) async {
       isAuthenticated = value;
       CacheMethods.cacheUserLoggedInState(isAuthenticated);
+      await userProfile.getData().then((value){
+        successful = true;
+      });
     });
-    bool? successful = await userProfile.getData();
+    print('working');
     if(successful!){
       setState((){
         isLoading=false;

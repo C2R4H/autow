@@ -4,7 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 
-import '../../midend/user_profile.dart';
+import '../../../midend/user_profile.dart';
+import 'account_screens/edit_profile.dart';
 
 class account_screen extends StatefulWidget {
   UserProfile? userProfile;
@@ -53,8 +54,8 @@ class account_screen_state extends State<account_screen> {
               await widget.userProfile!.uploadProfilePictureURL(imageUrl);
             }
           });
-        } on FirebaseException catch (error) {
-          print(error);
+        } on FirebaseException catch (err) {
+          print(err);
         }
       } catch (err) {
         print(err);
@@ -130,7 +131,7 @@ class account_screen_state extends State<account_screen> {
               ),
               SizedBox(height: 15),
               FlatButton(
-                onPressed: () async {
+                onPressed: widget.userProfile!.isAuthenticated! ? () async {
                   setState(() {
                     isLoading = true;
                   });
@@ -138,7 +139,7 @@ class account_screen_state extends State<account_screen> {
                   setState(() {
                     isLoading = false;
                   });
-                },
+                }: null,
                 color: Color(0xff212121),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -155,9 +156,10 @@ class account_screen_state extends State<account_screen> {
                       ? CircularProgressIndicator.adaptive(
                           backgroundColor: Colors.white)
                       : Text(
-                          'Change Profile Picture',
+                          'Edit profile',
                           style: TextStyle(
                             color: Colors.white,
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
                 ),

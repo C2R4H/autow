@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 //Screens
-import 'login_screen.dart';
-import '../screen_controller.dart';
+import '../authentication_screens/register_screen.dart';
+import '../../screen_controller.dart';
 
-import '../../backend/services/authentication.dart';
-import '../../backend/services/cache.dart';
+import '../../../backend/services/authentication.dart';
+import '../../../backend/services/cache.dart';
 
 class settings_screen extends StatefulWidget {
   bool? authState;

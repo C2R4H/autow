@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screen_controller.dart';
+import '../../screen_controller.dart';
 
 class add_post_screen extends StatelessWidget{
   @override

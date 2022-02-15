@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../screen_controller.dart';
-import 'settings_screen.dart';
-import 'add_post_screen.dart';
-import 'account_screen.dart';
+import '../../screen_controller.dart';
+import '../drawer_screens/settings_screen.dart';
+import '../bottomAppBar_screens/add_post_screen.dart';
+import '../drawer_screens/account_screen.dart';
 
-import '../widgets/post_half_widget.dart';
-import '../../backend/services/cache.dart';
-import '../../midend/user_profile.dart';
+import '../../widgets/post_half_widget.dart';
+import '../../../backend/services/cache.dart';
+import '../../../midend/user_profile.dart';
 
 class home_screen extends StatefulWidget {
   bool? authState;

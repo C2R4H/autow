@@ -1,36 +1,34 @@
 import 'package:flutter/material.dart';
 
-import '../../backend/services/authentication.dart';
-import '../widgets/alertdialog.dart';
+import '../../../backend/services/authentication.dart';
+import '../../widgets/alertdialog.dart';
 
-import 'login_screen.dart';
-import '../screen_controller.dart';
+import 'register_screen.dart';
+import '../../screen_controller.dart';
 
-class register_screen extends StatefulWidget {
+class login_screen extends StatefulWidget {
   @override
-  register_screen_state createState() => register_screen_state();
+  login_screen_state createState() => login_screen_state();
 }
 
-class register_screen_state extends State<register_screen> {
+class login_screen_state extends State<login_screen> {
   bool _passwordVisible = false;
   bool isLoading = false;
 
   final formKey = GlobalKey<FormState>();
-
   AuthMethods authMethods = AuthMethods();
 
-  TextEditingController usernameTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
   TextEditingController passwordTextController = TextEditingController();
 
-  bool register = false;
+  bool login = false;
 
-  //FormKey doesnt work properly so we are checking in another way
   errorFunction() {
-    register = false;
+    login = false;
   }
-  successfulFunction(){
-    register = true;
+
+  successfulFunction() {
+    login = true;
   }
 
   @override
@@ -46,13 +44,14 @@ class register_screen_state extends State<register_screen> {
     super.dispose();
   }
 
-  void registerFunction(context) async {
-    setState((){
+  void login_function() async {
+    setState(() {
       isLoading = true;
     });
-    if (formKey.currentState!.validate() && register) {
-     if(await authMethods.registerEmailAndPassword(
-          emailTextController.text, passwordTextController.text,context,usernameTextController.text)){
+    if (formKey.currentState!.validate() && login) {
+      if (await authMethods.loginWithEmailAndPassword(
+          emailTextController.text, passwordTextController.text)) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
@@ -61,15 +60,15 @@ class register_screen_state extends State<register_screen> {
             transitionDuration: const Duration(seconds: 0),
           ),
         );
-     }else{
-      showDialog(
+      } else {
+        showDialog(
           context: context,
           builder: (context) => errorDialog(context),
           barrierDismissible: false,
-          );
+        );
+      }
     }
-    }
-    setState((){
+    setState(() {
       isLoading = false;
     });
   }
@@ -118,36 +117,11 @@ class register_screen_state extends State<register_screen> {
                         color: Color(0xff212121),
                       ),
                       child: TextFormField(
-                        controller: usernameTextController,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        decoration: InputDecoration.collapsed(
-                          hintText: 'Username',
-                          hintStyle: TextStyle(
-                            color: Color(0xffBABABA),
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(0xff424242),
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color(0xff212121),
-                      ),
-                      child: TextFormField(
                         validator: (String? value) {
                           return RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                   .hasMatch(value!)
-                              ? successfulFunction() 
+                              ? successfulFunction()
                               : errorFunction();
                         },
                         autofillHints: [AutofillHints.email],
@@ -156,7 +130,7 @@ class register_screen_state extends State<register_screen> {
                           color: Colors.white,
                         ),
                         decoration: InputDecoration.collapsed(
-                          hintText: 'Email',
+                          hintText: 'Phone number, username, email',
                           hintStyle: TextStyle(
                             color: Color(0xffBABABA),
                             fontSize: 15,
@@ -177,7 +151,9 @@ class register_screen_state extends State<register_screen> {
                       ),
                       child: TextFormField(
                         validator: (val) {
-                          return val!.length > 6 ? successfulFunction() : errorFunction();
+                          return val!.length > 6
+                              ? successfulFunction()
+                              : errorFunction();
                         },
                         controller: passwordTextController,
                         obscureText: !_passwordVisible,
@@ -219,9 +195,24 @@ class register_screen_state extends State<register_screen> {
                 ),
               ),
               SizedBox(height: 20),
+              Container(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: () {},
+                  child: Text(
+                    'Forgotten password ?',
+                    style: TextStyle(
+                      color: Color(0xffFF7171),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
               FlatButton(
                 onPressed: () {
-                  registerFunction(context);
+                  login_function();
                 },
                 color: Color(0xffFF7171),
                 shape: RoundedRectangleBorder(
@@ -230,18 +221,21 @@ class register_screen_state extends State<register_screen> {
                 child: Container(
                   alignment: Alignment.center,
                   width: screen_width,
-                  child: isLoading ? CircularProgressIndicator.adaptive(backgroundColor: Colors.white) : Text(
-                    'Register',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
+                  child: isLoading
+                      ? const CircularProgressIndicator.adaptive(
+                          backgroundColor: Colors.white)
+                      : const Text(
+                          'Log In',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                 ),
               ),
+              const Spacer(),
               SizedBox(
                 height: MediaQuery.of(context).viewInsets.bottom,
               ),
-              Spacer(),
               Container(
                 width: screen_width,
                 color: Color(0xffBABABA),
@@ -255,11 +249,12 @@ class register_screen_state extends State<register_screen> {
                     onTap: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => login_screen()),
+                        MaterialPageRoute(
+                            builder: (context) => register_screen()),
                       );
                     },
                     child: Text(
-                      'Already have an account ? Log In',
+                      'Don\'t have an account ? Sign Up',
                       style: TextStyle(
                         color: Colors.white,
                       ),
