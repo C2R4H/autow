@@ -31,10 +31,10 @@ class settings_screen_state extends State<settings_screen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
-        backgroundColor: Color(0xff212121),
+        backgroundColor: Color(0xff121211),
       ),
       body: Container(
-        color: Color(0xff121212),
+        color: Colors.black,
         child: ListView(
           children: [
             SizedBox(height: 10),
@@ -54,19 +54,19 @@ class settings_screen_state extends State<settings_screen> {
                   } else {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => login_screen()),
+                      MaterialPageRoute(builder: (context) => register_screen()),
                     );
                   }
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color(0xff212121),
+                    color: Color(0xff121212),
                     border: Border(
                       top: BorderSide(
-                        color: Color(0xff424242),
+                        color: Color(0xff212121),
                       ),
                       bottom: BorderSide(
-                        color: Color(0xff424242),
+                        color: Color(0xff212121),
                       ),
                     ),
                   ),
@@ -74,7 +74,7 @@ class settings_screen_state extends State<settings_screen> {
                   height: 50,
                   child: Center(
                     child: Text(
-                      widget.authState! ? 'Logout' : 'Log In',
+                      widget.authState! ? 'Logout' : 'Register',
                       style: TextStyle(
                         color: Color(0xffFF7171),
                       ),

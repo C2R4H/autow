@@ -45,13 +45,13 @@ class home_screen_state extends State<home_screen> {
       key: scaffoldKey,
       drawer: Drawer(
         child: Container(
-          color: Color(0xff212121),
+          color: Color(0xff121212),
           child: ListView(
             children: [
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 15),
                 height: screen_height / 4,
-                color: Color(0xff121212),
+                color: Colors.black,
                 child: Row(
                   children: [
                     CircleAvatar(
@@ -183,7 +183,7 @@ class home_screen_state extends State<home_screen> {
         toolbarHeight: MediaQuery.of(context).size.height / 6,
         flexibleSpace: Container(
           padding: EdgeInsets.symmetric(horizontal: 15),
-          color: Color(0xff212121),
+          color: Color(0xff121212),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -209,7 +209,7 @@ class home_screen_state extends State<home_screen> {
                         color: Colors.white,
                       ),
                     ),
-                    Icon(Icons.menu, color: Color(0xff212121)),
+                    Icon(Icons.menu, color: Color(0xff121212)),
                   ],
                 ),
               ),
@@ -231,7 +231,7 @@ class home_screen_state extends State<home_screen> {
         ),
       ),
       body: Container(
-        color: Color(0xff121212),
+        color: Colors.black,
         child: ListView(
           padding: EdgeInsets.symmetric(
             horizontal: screen_width / 30,

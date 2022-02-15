@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/post_screen.dart';
+import '../screens/bottomAppBar_screens/post_screen.dart';
 
 Widget post_half_widget(BuildContext context) {
   double screen_width = MediaQuery.of(context).size.width;

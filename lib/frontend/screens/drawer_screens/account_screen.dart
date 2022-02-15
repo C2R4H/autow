@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 
 import '../../../midend/user_profile.dart';
-import 'account_screens/edit_profile.dart';
+import 'account_screens/edit_screen.dart';
 
 class account_screen extends StatefulWidget {
   UserProfile? userProfile;
@@ -65,13 +65,16 @@ class account_screen_state extends State<account_screen> {
     double screen_height = MediaQuery.of(context).size.height;
     double screen_width = MediaQuery.of(context).size.width;
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text('Account Screen'),
-        backgroundColor: Color(0xff212121),
+        backgroundColor: Color(0xff121212).withOpacity(0.92),
+        elevation: 0,
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-        color: Color(0xff121212),
+      body: 
+           Container(
+        padding: EdgeInsets.symmetric( horizontal: 15),
+        color: Colors.black,
         child: RefreshIndicator(
           color: Color(0xffFF7171),
           backgroundColor: Color(0xff212121),
@@ -131,7 +134,13 @@ class account_screen_state extends State<account_screen> {
               ),
               SizedBox(height: 15),
               FlatButton(
-                onPressed: widget.userProfile!.isAuthenticated! ? () async {
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => edit_screen()),
+                      );
+                },
+                /*widget.userProfile!.isAuthenticated! ? () async {
                   setState(() {
                     isLoading = true;
                   });
@@ -139,7 +148,7 @@ class account_screen_state extends State<account_screen> {
                   setState(() {
                     isLoading = false;
                   });
-                }: null,
+                }: null,*/
                 color: Color(0xff212121),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),

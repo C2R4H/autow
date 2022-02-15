@@ -4,11 +4,11 @@ import '../backend/services/authentication.dart';
 import '../backend/services/cache.dart';
 import '../midend/user_profile.dart';
 
-import 'screens/home_screen.dart';
-import 'screens/favorites_screen.dart';
-import 'screens/add_post_screen.dart';
-import 'screens/messages_screen.dart';
-import 'screens/my_posts_screen.dart';
+import 'screens/bottomAppBar_screens/home_screen.dart';
+import 'screens/bottomAppBar_screens/favorites_screen.dart';
+import 'screens/bottomAppBar_screens/add_post_screen.dart';
+import 'screens/bottomAppBar_screens/messages_screen.dart';
+import 'screens/bottomAppBar_screens/my_posts_screen.dart';
 
 class screen_controller extends StatefulWidget {
   @override
@@ -123,13 +123,14 @@ class screen_controller_state extends State<screen_controller> {
         ),
       ),*/
       bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: const  Color(0xff212121),
-          unselectedItemColor: Colors.grey,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: const Color(0xff121212).withOpacity(0.92),
+          elevation: 0,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: Icon(Icons.search),
                 label: 'Search',
-                backgroundColor: const Color(0xff212121),
+                backgroundColor: const Color(0xff424242),
                 ),
             BottomNavigationBarItem(
                 icon: Icon(Icons.favorite_outline),
@@ -154,10 +155,20 @@ class screen_controller_state extends State<screen_controller> {
                 backgroundColor: const Color(0xff212121),
                 ),
           ],
+          selectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: MediaQuery.of(context).size.height/50,
+              ),
+          unselectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: MediaQuery.of(context).size.height/50,
+              ),
           currentIndex: _selectedIndex,
           selectedItemColor: Color(0xffFF7171),
+          unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,
           ),
+          extendBody: true,
       body: PageView(
         controller: _myPage,
         physics: NeverScrollableScrollPhysics(),
