@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../backend/services/cache.dart';
@@ -8,16 +7,16 @@ class UserProfile {
   AuthMethods authMethods = AuthMethods();
 
   bool? isAuthenticated;
-  String? username = "";
-  String? email = "";
-  String? profileImage = "";
+  String? username;
+  String? email;
+  String? profileImage;
 
   Future<bool?> getData() async {
     username = await CacheMethods.getCachedUsernameState();
     email = await CacheMethods.getCachedUserEmailState();
     profileImage = await CacheMethods.getCachedProfilePictureURL();
     isAuthenticated = await CacheMethods.getCachedUserLoggedInState();
-    if (username == "" || email == "" || profileImage == "" || isAuthenticated==null ) {
+    if (username == null || email == null || profileImage == "" || isAuthenticated == null ) {
       User? user = authMethods.auth.currentUser;
       if (user != null) {
         isAuthenticated = true;
@@ -34,6 +33,7 @@ class UserProfile {
         isAuthenticated = false;
         username = "AutoW";
         email = "AutoW";
+        profileImage = "";
       }
     }
   return true;

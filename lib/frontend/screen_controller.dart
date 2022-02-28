@@ -20,7 +20,7 @@ class screen_controller_state extends State<screen_controller> {
   AuthMethods authMethods = AuthMethods();
   UserProfile userProfile = UserProfile();
 
-  PageController _myPage = PageController(initialPage: 0);
+  final PageController _myPage = PageController(initialPage: 0);
   int _selectedIndex = 0;
   bool isAuthenticated = false;
   bool isLoading = false;
@@ -37,7 +37,6 @@ class screen_controller_state extends State<screen_controller> {
         successful = true;
       });
     });
-    print('working');
     if(successful!){
       setState((){
         isLoading=false;
@@ -47,23 +46,24 @@ class screen_controller_state extends State<screen_controller> {
 
   void _onItemTapped(int index){
     setState((){
-      if(index!=2)
+      if(index!=2){
         _selectedIndex = index;
+      }
     });
-    if(index==0)
+    if(index==0){
       _myPage.jumpToPage(0);
-    else if(index==1)
+    } else if(index==1){
       _myPage.jumpToPage(1);
-    else if(index==2){
+    } else if(index==2){
       Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => add_post_screen()),
           );
-    }
-    else if(index==3)
+    } else if(index==3){
       _myPage.jumpToPage(3);
-    else if(index==4)
+    } else if(index==4){
       _myPage.jumpToPage(4);
+    }
   }
 
   void initState() {
@@ -81,50 +81,9 @@ class screen_controller_state extends State<screen_controller> {
                 ),
             ),
         ) : Scaffold(
-      /*bottomNavigationBar: BottomAppBar(
-        color: Color(0xff212121),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-              icon: Icon(Icons.search, color: Colors.grey),
-              onPressed: () { 
-                _myPage.jumpToPage(0);
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.favorite_outline, color: Colors.grey),
-              onPressed: () {
-                _myPage.jumpToPage(1);
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.add_box, color: Colors.grey),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => add_post_screen()),
-                );
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.mail_outlined, color: Colors.grey),
-              onPressed: () {
-                _myPage.jumpToPage(3);
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.grid_on, color:  Colors.grey),
-              onPressed: () {
-                _myPage.jumpToPage(4);
-              },
-            ),
-          ],
-        ),
-      ),*/
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor: const Color(0xff121212).withOpacity(0.92),
+          backgroundColor: const Color(0xff121212),
           elevation: 0,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -164,11 +123,10 @@ class screen_controller_state extends State<screen_controller> {
               fontSize: MediaQuery.of(context).size.height/50,
               ),
           currentIndex: _selectedIndex,
-          selectedItemColor: Color(0xffFF7171),
+          selectedItemColor: const Color(0xffFF7171),
           unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,
           ),
-          extendBody: true,
       body: PageView(
         controller: _myPage,
         physics: NeverScrollableScrollPhysics(),
