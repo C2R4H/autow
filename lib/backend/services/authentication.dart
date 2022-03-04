@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'cache.dart';
 
-import '../../frontend/widgets/alertdialog.dart';
-
 class AuthMethods {
   FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -51,7 +49,7 @@ class AuthMethods {
   Future<bool> loginWithEmailAndPassword(String email, String password) async {
     bool successful = false;
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       User? user = auth.currentUser; 
       String? username = user!.displayName.toString();

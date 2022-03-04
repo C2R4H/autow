@@ -6,17 +6,17 @@ import '../backend/services/authentication.dart';
 class UserProfile {
   AuthMethods authMethods = AuthMethods();
 
-  bool? isAuthenticated;
-  String? username;
-  String? email;
-  String? profileImage;
+  bool? isAuthenticated = false;
+  String? username = "AutoW";
+  String? email = "AutoW";
+  String? profileImage = "";
 
   Future<bool?> getData() async {
     username = await CacheMethods.getCachedUsernameState();
     email = await CacheMethods.getCachedUserEmailState();
     profileImage = await CacheMethods.getCachedProfilePictureURL();
     isAuthenticated = await CacheMethods.getCachedUserLoggedInState();
-    if (username == null || email == null || profileImage == "" || isAuthenticated == null ) {
+    if (username == null || email == null || profileImage == "" || isAuthenticated == null  || profileImage == null ) {
       User? user = authMethods.auth.currentUser;
       if (user != null) {
         isAuthenticated = true;
@@ -36,6 +36,10 @@ class UserProfile {
         profileImage = "";
       }
     }
+    print(isAuthenticated);
+    print(username);
+    print(email);
+    print(profileImage);
   return true;
   }
 

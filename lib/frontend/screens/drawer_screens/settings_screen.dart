@@ -17,14 +17,6 @@ class settings_screen extends StatefulWidget {
 class settings_screen_state extends State<settings_screen> {
   AuthMethods authMethods = AuthMethods();
 
-  checkState() async {
-    widget.authState = await CacheMethods.getCachedUserLoggedInState();
-  }
-
-  void initState() {
-    checkState();
-  }
-
   @override
   Widget build(BuildContext context) {
     double screen_width = MediaQuery.of(context).size.width;

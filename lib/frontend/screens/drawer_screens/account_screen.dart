@@ -149,12 +149,12 @@ class account_screen_state extends State<account_screen> {
                     isLoading = false;
                   });
                 }: null,*/
-                color: Color(0xff212121),
+                color: Colors.grey[900],
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                   side: BorderSide(
-                    color: Color(0xff424242),
-                    width: 2,
+                    color: Color(0xff313131),
+                    width: 1,
                   ),
                 ),
                 height: screen_height / 15,

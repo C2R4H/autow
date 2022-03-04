@@ -10,9 +10,8 @@ import '../../../backend/services/cache.dart';
 import '../../../midend/user_profile.dart';
 
 class home_screen extends StatefulWidget {
-  bool? authState;
   UserProfile? userProfile;
-  home_screen({this.authState, this.userProfile});
+  home_screen({this.userProfile});
   @override
   home_screen_state createState() => home_screen_state();
 }
@@ -153,7 +152,7 @@ class home_screen_state extends State<home_screen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  settings_screen(authState: value)),
+                                  settings_screen(authState: widget.userProfile!.isAuthenticated)),
                         );
                       });
                     },
