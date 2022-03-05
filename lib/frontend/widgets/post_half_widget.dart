@@ -23,7 +23,7 @@ Widget post_half_widget(BuildContext context) {
           children: [
             Container(
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: Color(0xff51A0D5),
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
               ),
               height: screen_height / 5,

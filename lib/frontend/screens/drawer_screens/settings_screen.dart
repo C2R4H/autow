@@ -53,7 +53,7 @@ class settings_screen_state extends State<settings_screen> {
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color(0xff121212),
+                    color: Color(0xff272727),
                     border: Border(
                       top: BorderSide(
                         color: Color(0xff212121),

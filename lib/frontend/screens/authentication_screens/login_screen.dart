@@ -27,11 +27,7 @@ class login_screen_state extends State<login_screen> {
   bool login = false;
 
   successfulFunction(bool succesful) {
-    if (succesful) {
-      login = true;
-    } else {
-      login = false;
-    }
+    login = succesful;
   }
 
   @override
@@ -71,7 +67,7 @@ class login_screen_state extends State<login_screen> {
               children: [
                 Spacer(),
                 Text(
-                  'AutoWorld',
+                  'AutoW',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: screen_height / 20,
@@ -87,22 +83,22 @@ class login_screen_state extends State<login_screen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Color(0xff424242),
+                            color: Color(0xff212121),
                           ),
                           borderRadius: BorderRadius.circular(10),
-                          color: Color(0xff212121),
+                          color: Color(0xff272727),
                         ),
                         child: TextFormField(
                           validator: (String? value) {
                             return RegExp(
                                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                     .hasMatch(value!)
-                                ? successfulFunction(true)
-                                : successfulFunction(false);
+                                ? null
+                                : null;
                           },
                           autofillHints: [AutofillHints.email],
                           controller: emailTextController,
-                             textAlignVertical: TextAlignVertical.center,
+                          textAlignVertical: TextAlignVertical.center,
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -112,8 +108,8 @@ class login_screen_state extends State<login_screen> {
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
-                            prefixIcon:
-                                Icon(Icons.person_outlined, color: Color(0xffBABABA)),
+                            prefixIcon: Icon(Icons.person_outlined,
+                                color: Color(0xffBABABA)),
                             hintText: 'Email',
                             hintStyle: TextStyle(
                               color: Color(0xffBABABA),
@@ -128,31 +124,29 @@ class login_screen_state extends State<login_screen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Color(0xff424242),
+                            color: Color(0xff212121),
                           ),
                           borderRadius: BorderRadius.circular(10),
-                          color: Color(0xff212121),
+                          color: Color(0xff272727),
                         ),
                         child: TextFormField(
                           validator: (val) {
-                            return val!.length > 6
-                                ? successfulFunction(true)
-                                : successfulFunction(false);
+                            return val!.length > 6 ? null : null;
                           },
                           controller: passwordTextController,
                           obscureText: !_passwordVisible,
                           style: TextStyle(
                             color: Colors.white,
                           ),
-                             textAlignVertical: TextAlignVertical.center,
+                          textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
                             disabledBorder: InputBorder.none,
-                            prefixIcon:
-                                Icon(Icons.lock_outlined, color: Color(0xffBABABA)),
+                            prefixIcon: Icon(Icons.lock_outlined,
+                                color: Color(0xffBABABA)),
                             suffixIcon: IconButton(
                               padding: EdgeInsets.zero,
                               splashColor: Colors.transparent,
@@ -181,26 +175,29 @@ class login_screen_state extends State<login_screen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
                 Container(
-                  alignment: Alignment.topRight,
-                  child: InkWell(
-                    onTap: () {},
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      primary: Colors.black,
+                    ),
+                    onPressed: () {},
                     child: Text(
                       'Forgotten password ?',
                       style: TextStyle(
-                        color: Color(0xffFF7171),
+                        color: Color(0xff51A0D5),
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
                 BlocListener(
                   bloc: _loginBloc,
                   listener: (context, state) {
                     if (state is LoginBlocStateLoggedIn) {
+                      print("LOGGED IN");
                       Navigator.of(context).popUntil((route) => route.isFirst);
                       Navigator.pushReplacement(
                         context,
@@ -212,6 +209,7 @@ class login_screen_state extends State<login_screen> {
                       );
                     }
                     if (state is LoginBlocStateError) {
+                      print("LOGIN ERROR");
                       showDialog(
                         context: context,
                         builder: (context) => errorDialog(context),
@@ -221,30 +219,19 @@ class login_screen_state extends State<login_screen> {
                   },
                   child: BlocBuilder<LoginBloc, LoginBlocState>(
                       builder: (context, state) {
+                    print("NOTHING");
                     if (state is LoginBlocStateLoading) {
+                      print("LOADING");
                       return const CircularProgressIndicator.adaptive(
                           backgroundColor: Colors.white);
                     }
-                    return FlatButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate() && login) {
-                          _loginBloc.add(LoginSubmitted(
-                              validate: login,
-                              password: passwordTextController.text,
-                              email: emailTextController.text));
-                        }
-                      },
-                      color: Color(0xffFF7171),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5)),
-                      height: 45,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: screen_width,
-                        child: Text('Login',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    );
+                    return login_button(
+                        _formKey,
+                        login,
+                        _loginBloc,
+                        passwordTextController,
+                        emailTextController,
+                        screen_width);
                   }),
                 ),
                 const Spacer(),
@@ -268,10 +255,18 @@ class login_screen_state extends State<login_screen> {
                               builder: (context) => register_screen()),
                         );
                       },
-                      child: Text(
-                        'Don\'t have an account ? Sign Up',
-                        style: TextStyle(
-                          color: Colors.white,
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'Don\'t have an account ?',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: " Register",
+                            style: TextStyle(color: Color(0xff51A0D5)),
+                          ),
+                        ],
                         ),
                       ),
                     ),
@@ -284,4 +279,31 @@ class login_screen_state extends State<login_screen> {
       ),
     );
   }
+}
+
+Widget login_button(_formKey, login, _loginBloc, passwordTextController,
+    emailTextController, screen_width) {
+  return TextButton(
+    onPressed: () {
+      print("${_formKey.currentState!.validate()} && $login");
+      if (_formKey.currentState!.validate() && login) {
+        _loginBloc.add(LoginSubmitted(
+            validate: login,
+            password: passwordTextController.text,
+            email: emailTextController.text));
+      }
+    },
+    style: TextButton.styleFrom(
+      primary: Colors.black,
+      //backgroundColor: Color(0xff2C528C),
+      backgroundColor: Color(0xff51A0D5),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+    ),
+    child: Container(
+      height: 30,
+      alignment: Alignment.center,
+      width: screen_width,
+      child: Text('Log In', style: TextStyle(color: Colors.white)),
+    ),
+  );
 }
