@@ -3,6 +3,42 @@ import 'cache.dart';
 
 class AuthMethods {
   FirebaseAuth auth = FirebaseAuth.instance;
+  String getMessageFromErrorCode(errorCode) {
+    switch (errorCode) {
+      case "ERROR_EMAIL_ALREADY_IN_USE":
+      case "account-exists-with-different-credential":
+      case "email-already-in-use":
+        return "Email already used. Go to login page.";
+        break;
+      case "ERROR_WRONG_PASSWORD":
+      case "wrong-password":
+        return "Wrong email/password combination.";
+        break;
+      case "ERROR_USER_NOT_FOUND":
+      case "user-not-found":
+        return "No user found with this email.";
+        break;
+      case "ERROR_USER_DISABLED":
+      case "user-disabled":
+        return "User disabled.";
+        break;
+      case "ERROR_TOO_MANY_REQUESTS":
+      case "operation-not-allowed":
+        return "Too many requests to log into this account.";
+        break;
+      case "ERROR_OPERATION_NOT_ALLOWED":
+      case "operation-not-allowed":
+        return "Server error, please try again later.";
+        break;
+      case "ERROR_INVALID_EMAIL":
+      case "invalid-email":
+        return "Email address is invalid.";
+        break;
+      default:
+        return "Login failed. Please try again.";
+        break;
+    }
+  }
 
   Future<bool> isUserAuthenticated() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -46,8 +82,8 @@ class AuthMethods {
     return successful;
   }
 
-  Future<bool> loginWithEmailAndPassword(String email, String password) async {
-    bool successful = false;
+  Future<String> loginWithEmailAndPassword(String email, String password) async {
+    String success = "";
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
@@ -60,21 +96,14 @@ class AuthMethods {
 
       print(
           'Login successfuly \: \n email: $email \n username: $username \n\n');
-      successful = true;
+      success = "success";
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-        successful = false;
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-        successful = false;
-      }
-        successful = false;
+      success = getMessageFromErrorCode(e.code);
     } catch (e) {
-      successful = false;
+      success = "";
       print(e);
     }
-    return successful;
+    return success;
   }
 
   Future logout() async {
@@ -89,3 +118,5 @@ class AuthMethods {
     }
   }
 }
+
+

@@ -16,6 +16,20 @@ class AutoW extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
+        /*theme: ThemeData.light().copyWith(
+            ),*/
+        theme: ThemeData.dark().copyWith(
+            primaryColor: const Color(0xff212121),
+            accentColor: const Color(0xff51A05D),
+            canvasColor: const Color(0xff121212),
+            appBarTheme: AppBarTheme(
+                backgroundColor: const Color(0xff121212),
+                ),
+            scaffoldBackgroundColor: Colors.black,
+            bottomNavigationBarTheme: BottomNavigationBarThemeData(
+                backgroundColor: const Color(0xff121212),
+                ),
+            ),
         home: screen_controller(),
         );
   }

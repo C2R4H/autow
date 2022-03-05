@@ -65,7 +65,7 @@ class register_screen_state extends State<register_screen> {
      }else{
       showDialog(
           context: context,
-          builder: (context) => errorDialog(context),
+          builder: (context) => errorDialog(context,"ERROR"),
           barrierDismissible: false,
           );
     }

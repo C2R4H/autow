@@ -87,9 +87,9 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
         highlightColor: Colors.transparent,
       ),
       child: BottomNavigationBar(
+        backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: const Color(0xff121212),
         elevation: 0,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

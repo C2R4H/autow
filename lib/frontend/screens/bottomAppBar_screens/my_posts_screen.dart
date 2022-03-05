@@ -6,10 +6,8 @@ class my_posts_screen extends StatelessWidget{
     return Scaffold(
         appBar: AppBar(
             title: Text('My Posts'),
-            backgroundColor: Color(0xff212121),
             ),
     body: Container(
-        color: Color(0xff121212),
               child: Center(
                   child: Text(
                       'My posts screen',

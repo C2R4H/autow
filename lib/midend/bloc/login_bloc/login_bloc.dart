@@ -12,37 +12,64 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
   LoginBloc() : super(LoginBlocStateWaitingForInput()) {
     AuthMethods _authMethods = AuthMethods();
     UserProfile userProfile = UserProfile();
-    on<LoginSubmitted>((event, emit) async{
-      print(event.validate);
-      print(event.password);
-      print(event.email);
-      try{
+
+    bool emailValidate = false;
+    bool passwordValidate = false;
+
+    String email = "";
+    String password = "";
+    on<LoginSubmitted>((event, emit) async {
+      String code = "";
+      try {
         emit(LoginBlocStateWaitingForInput());
-        if(event.validate){
-          emit(LoginBlocStateLoading());
-          if(await _authMethods.loginWithEmailAndPassword(event.email,event.password)){
+        emit(LoginBlocStateLoading());
+        await _authMethods
+            .loginWithEmailAndPassword(email, password)
+            .then((e) async {
+          code = e;
+          if (code == "success") {
             await userProfile.getData();
             emit(LoginBlocStateLoggedIn(userProfile));
-            print(userProfile.username);
-          }else{
-            emit(LoginBlocStateError('Wrong data'));
-        emit(LoginBlocStateWaitingForInput());
+          } else {
+            emit(LoginBlocStateError(code));
+            emit(LoginBlocStateWaitingForInput());
           }
-        }else{
-          emit(LoginBlocStateError('No text'));
-        emit(LoginBlocStateWaitingForInput());
-        }
-      }catch(e){
-        emit(LoginBlocStateError('NOT'));
+        });
+      } catch (e) {
+        emit(LoginBlocStateError(code));
         emit(LoginBlocStateWaitingForInput());
       }
     });
 
-    on<OnButtonPressed>((event, emit) async {
-      try {
-        emit(LoginBlocStateWaitingForInput());
-      } catch (e) {
-        print(e.toString());
+    on<LoginEmailChanged>((event, emit) async {
+      emit(LoginBlocStateEmailCopy(state.email));
+      String pattern =
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+      RegExp regex = RegExp(pattern);
+      if (regex.hasMatch(event.email)) {
+        email = event.email;
+        emit(LoginBlocStateEmailValid());
+        emailValidate = true;
+        if (passwordValidate) {
+          emit(LoginBlocStateValidate());
+        }
+      } else {
+        emit(LoginBlocStateInValid());
+      }
+    });
+
+    on<LoginPasswordChanged>((event, emit) async {
+      emit(LoginBlocStateEmailCopy(state.password));
+      RegExp regex = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+      if (regex.hasMatch(event.password)) {
+        password = event.password;
+        emit(LoginBlocStatePasswordValid());
+        passwordValidate = true;
+        if (emailValidate) {
+          emit(LoginBlocStateValidate());
+        }
+      } else {
+        emit(LoginBlocStateInValid());
       }
     });
   }

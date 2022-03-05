@@ -5,11 +5,9 @@ class favorites_screen extends StatelessWidget{
   Widget build(BuildContext context){
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Color(0xff212121),
             title: Text('Favorites'),
             ),
         body: Container(
-            color: Color(0xff121212),
             child: Center(
                 child: Text(
                     'Favorites Screen',

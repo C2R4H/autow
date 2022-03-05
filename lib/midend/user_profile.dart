@@ -36,10 +36,6 @@ class UserProfile {
         profileImage = "";
       }
     }
-    print(isAuthenticated);
-    print(username);
-    print(email);
-    print(profileImage);
   return true;
   }
 
