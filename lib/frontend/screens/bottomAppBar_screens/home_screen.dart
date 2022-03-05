@@ -19,14 +19,6 @@ class home_screen extends StatefulWidget {
 class home_screen_state extends State<home_screen> {
   String username = '';
 
-  /*checkState() async {
-    await userProfile.getData();
-    setState(() {
-      username = userProfile.username!;
-    });
-    widget.authState = await CacheMethods.getCachedUserLoggedInState();
-  }*/
-
   @override
   void initState() {
     username = widget.userProfile!.username!;
@@ -202,7 +194,7 @@ class home_screen_state extends State<home_screen> {
                       },
                     ),
                     Text(
-                      'AutoWorld',
+                      'AutoW',
                       style: TextStyle(
                         fontSize: screen_height / 30,
                         color: Colors.white,

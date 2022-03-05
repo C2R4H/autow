@@ -35,13 +35,14 @@ class settings_screen_state extends State<settings_screen> {
                 onTap: () async {
                   if (widget.authState!) {
                     await authMethods.logout();
-                    Navigator.pushReplacement(
+                    Navigator.pushAndRemoveUntil(
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
                             screen_controller(),
                         transitionDuration: Duration(seconds: 0),
                       ),
+                      (Route<dynamic> route) => false,
                     );
                   } else {
                     Navigator.push(

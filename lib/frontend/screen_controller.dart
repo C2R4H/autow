@@ -67,133 +67,9 @@ class screen_controller_state extends State<screen_controller> {
               ),
             );
           } else if (state is AuthBlocStateAuthenticated) {
-            print('is authenticated');
-            return Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: const Color(0xff121212),
-                elevation: 0,
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    label: 'Search',
-                    backgroundColor: const Color(0xff424242),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite_outline),
-                    label: 'Favorites',
-                    backgroundColor: const Color(0xff212121),
-                    activeIcon: Icon(Icons.favorite),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.add_box),
-                    label: 'Add post',
-                    backgroundColor: const Color(0xff212121),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.mail_outlined),
-                    label: 'Messages',
-                    backgroundColor: const Color(0xff212121),
-                    activeIcon: Icon(Icons.mail),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.grid_on_outlined),
-                    label: 'My posts',
-                    backgroundColor: const Color(0xff212121),
-                  ),
-                ],
-                selectedLabelStyle: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: MediaQuery.of(context).size.height / 50,
-                ),
-                unselectedLabelStyle: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: MediaQuery.of(context).size.height / 50,
-                ),
-                currentIndex: _selectedIndex,
-                selectedItemColor: const Color(0xffFF7171),
-                unselectedItemColor: Colors.grey,
-                onTap: _onItemTapped,
-              ),
-              body: PageView(
-                controller: _myPage,
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: (int) {},
-                children: [
-                  home_screen(
-                    userProfile: state.userProfile
-                  ),
-                  favorites_screen(),
-                  add_post_screen(),
-                  messages_screen(),
-                  my_posts_screen(),
-                ],
-              ),
-            );
+            return screenController(context, _selectedIndex, _myPage,state,_onItemTapped);
           } else if (state is AuthBlocStateUnaunthenticated) {
-            print('is not authenticated');
-            return Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: const Color(0xff121212),
-                elevation: 0,
-                items: const <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    label: 'Search',
-                    backgroundColor: const Color(0xff424242),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite_outline),
-                    label: 'Favorites',
-                    backgroundColor: const Color(0xff212121),
-                    activeIcon: Icon(Icons.favorite),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.add_box),
-                    label: 'Add post',
-                    backgroundColor: const Color(0xff212121),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.mail_outlined),
-                    label: 'Messages',
-                    backgroundColor: const Color(0xff212121),
-                    activeIcon: Icon(Icons.mail),
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.grid_on_outlined),
-                    label: 'My posts',
-                    backgroundColor: const Color(0xff212121),
-                  ),
-                ],
-                selectedLabelStyle: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: MediaQuery.of(context).size.height / 50,
-                ),
-                unselectedLabelStyle: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: MediaQuery.of(context).size.height / 50,
-                ),
-                currentIndex: _selectedIndex,
-                selectedItemColor: const Color(0xffFF7171),
-                unselectedItemColor: Colors.red,
-                onTap: _onItemTapped,
-              ),
-              body: PageView(
-                controller: _myPage,
-                physics: NeverScrollableScrollPhysics(),
-                onPageChanged: (int) {},
-                children: [
-                  home_screen(
-                    userProfile: state.userProfile
-                  ),
-                  favorites_screen(),
-                  add_post_screen(),
-                  messages_screen(),
-                  my_posts_screen(),
-                ],
-              ),
-            );
+            return screenController(context, _selectedIndex, _myPage,state,_onItemTapped);
           }
           return Container();
         },
@@ -201,4 +77,72 @@ class screen_controller_state extends State<screen_controller> {
     );
     //return home_screen();
   }
+}
+
+Widget screenController(context,int _selectedIndex, PageController _myPage, state, _onItemTapped) {
+  return Scaffold(
+    bottomNavigationBar: Theme(
+      data: ThemeData(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+      ),
+      child: BottomNavigationBar(
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: const Color(0xff121212),
+        elevation: 0,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+            backgroundColor: const Color(0xff424242),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_outline),
+            label: 'Favorites',
+            backgroundColor: const Color(0xff212121),
+            activeIcon: Icon(Icons.favorite),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_box),
+            label: 'New Post',
+            backgroundColor: const Color(0xff212121),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail_outlined),
+            label: 'Messages',
+            backgroundColor: const Color(0xff212121),
+            activeIcon: Icon(Icons.mail),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.grid_on_outlined),
+            label: 'Posts',
+            backgroundColor: const Color(0xff212121),
+          ),
+        ],
+        selectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: MediaQuery.of(context).size.height / 55,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: MediaQuery.of(context).size.height / 55,
+        ),
+        currentIndex: _selectedIndex,
+        selectedItemColor: const Color(0xffFF7171),
+        unselectedItemColor: Colors.grey[600],
+      ),
+    ),
+    body: PageView(
+      controller: _myPage,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        home_screen(userProfile: state.userProfile),
+        favorites_screen(),
+        add_post_screen(),
+        messages_screen(),
+        my_posts_screen(),
+      ],
+    ),
+  );
 }
