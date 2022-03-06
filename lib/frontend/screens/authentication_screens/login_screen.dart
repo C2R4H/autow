@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widgets/alertdialog.dart';
 
 import 'register_screen.dart';
+import 'forgotten_password.dart';
 import '../../screen_controller.dart';
 
 import '../../../midend/bloc/login_bloc/login_bloc.dart';
@@ -85,7 +86,7 @@ class login_screen_state extends State<login_screen> {
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
-                            prefixIcon: Icon(Icons.person_outlined,
+                            prefixIcon: Icon(Icons.email_outlined,
                                 color: Color(0xffBABABA)),
                             hintText: 'Email',
                             hintStyle: TextStyle(
@@ -158,9 +159,13 @@ class login_screen_state extends State<login_screen> {
                   child: TextButton(
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
-                      primary: Colors.black,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => forgotten_password()),
+                          );
+                    },
                     child: Text(
                       'Forgotten password ?',
                       style: TextStyle(

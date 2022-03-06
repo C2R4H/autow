@@ -48,6 +48,21 @@ class AuthMethods {
     return false;
   }
 
+  Future<String> sendPasswordResetEmail(String email) async {
+    String success = "";
+    try{
+       await auth.sendPasswordResetEmail(email: email);
+       success = "success";
+    }on FirebaseAuthException catch (e){
+      success = getMessageFromErrorCode(e.code);
+    }catch(e){
+      success = "";
+      print(e);
+    }
+    return success;
+  }
+  
+
   Future<String> registerEmailAndPassword(
       String email, String password, String username) async {
     String success = "";
