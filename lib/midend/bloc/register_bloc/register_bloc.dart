@@ -21,8 +21,6 @@ class RegisterBloc extends Bloc<RegisterBlocEvent, RegisterBlocState> {
     String confirmPassword;
     String password = "";
 
-    on<RegisterEventSubmitted>((event, emit) async {});
-
     on<RegisterEventUsernameSubmitted>((event, emit) async {
       if (usernameValidate) {
         emit(RegisterBlocStateUsernameSubmitted());
@@ -37,9 +35,6 @@ class RegisterBloc extends Bloc<RegisterBlocEvent, RegisterBlocState> {
 
     on<RegisterEventEmailSubmitted>((event, emit) async {
       if(emailValidate && passwordValidate && usernameValidate){
-        print(email);
-        print(password);
-        print(username);
         emit(RegisterBlocStateLoading());
         await _authMethods.registerEmailAndPassword(email,password,username).then((e){
           if(e=="success"){

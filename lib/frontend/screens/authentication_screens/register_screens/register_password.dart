@@ -144,7 +144,6 @@ class register_password_state extends State<register_password>{
         ),
         SizedBox(height: 15),
         BlocBuilder<RegisterBloc, RegisterBlocState>(builder: (context, state) {
-          print(state);
           if (state is RegisterBlocStatePasswordandConfirmPasswordValid) {
             return register_button(widget._registerBloc,MediaQuery.of(context).size.width, true);
           }
