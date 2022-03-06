@@ -129,7 +129,7 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
           fontSize: MediaQuery.of(context).size.height / 55,
         ),
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xff51A0D5),
+        selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey[600],
       ),
     ),

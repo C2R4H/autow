@@ -48,9 +48,9 @@ class AuthMethods {
     return false;
   }
 
-  Future<bool> registerEmailAndPassword(
-      String email, String password, context, String username) async {
-    bool successful = false;
+  Future<String> registerEmailAndPassword(
+      String email, String password, String username) async {
+    String success = "";
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -64,22 +64,15 @@ class AuthMethods {
 
         print(
             'Registered successfuly \: \n email: $email \n username: $username \n\n');
-        successful = true;
+      success = "success";
       }
     } on FirebaseAuthException catch (e) {
-      print(e.code.toString());
-      if (e.code == 'weak-password') {
-        print('weak-password');
-        successful = false;
-      } else if (e.code == 'email-already-in-use') {
-        print('email-already-in-use');
-        successful = false;
-      }
-      successful = false;
+      success = getMessageFromErrorCode(e.code);
     } catch (e) {
-      successful = false;
+      success = "";
+      print(e);
     }
-    return successful;
+    return success;
   }
 
   Future<String> loginWithEmailAndPassword(String email, String password) async {

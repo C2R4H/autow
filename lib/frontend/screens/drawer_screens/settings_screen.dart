@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 //Screens
-import '../authentication_screens/register_screen.dart';
+import '../authentication_screens/login_screen.dart';
 import '../../screen_controller.dart';
 
 import '../../../backend/services/authentication.dart';
@@ -47,13 +47,13 @@ class settings_screen_state extends State<settings_screen> {
                   } else {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => register_screen()),
+                      MaterialPageRoute(builder: (context) => login_screen()),
                     );
                   }
                 },
                 child: Ink(
                   decoration: BoxDecoration(
-                    color: Color(0xff272727),
+                    color: Color(0xff212121),
                     border: Border(
                       top: BorderSide(
                         color: Color(0xff212121),
@@ -67,7 +67,7 @@ class settings_screen_state extends State<settings_screen> {
                   height: 50,
                   child: Center(
                     child: Text(
-                      widget.authState! ? 'Logout' : 'Register',
+                      widget.authState! ? 'Logout' : 'Login',
                       style: TextStyle(
                         color: Color(0xffFF7171),
                       ),
