@@ -5,11 +5,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 
 import '../../../midend/user_profile.dart';
-import 'account_screens/edit_screen.dart';
+
+part 'account_screens/edit_screen.dart';
 
 class account_screen extends StatefulWidget {
-  UserProfile? userProfile;
-  account_screen({this.userProfile});
+  UserProfile userProfile;
+  account_screen(this.userProfile);
   @override
   account_screen_state createState() => account_screen_state();
 }
@@ -21,7 +22,7 @@ class account_screen_state extends State<account_screen> {
   FirebaseStorage storage = FirebaseStorage.instance;
 
   void initState() {
-    username = widget.userProfile!.username!;
+    username = widget.userProfile.username!;
     super.initState();
   }
 
@@ -44,14 +45,14 @@ class account_screen_state extends State<account_screen> {
         try {
           Reference reference =
               storage.ref().child('profilePictures/').child('$username.jpg');
-          if (widget.userProfile!.profileImage != "") {
+          if (widget.userProfile.profileImage != "") {
             await reference.delete();
           }
           UploadTask uploadTask = reference.putFile(imageFile);
           uploadTask.whenComplete(() async {
             String imageUrl = await reference.getDownloadURL();
             if (imageUrl != null) {
-              await widget.userProfile!.uploadProfilePictureURL(imageUrl);
+              await widget.userProfile.uploadProfilePictureURL(imageUrl);
             }
           });
         } on FirebaseException catch (err) {
@@ -89,11 +90,11 @@ class account_screen_state extends State<account_screen> {
                 children: [
                   CircleAvatar(
                     backgroundColor: Color(0xff414141),
-                    backgroundImage: widget.userProfile!.profileImage == ""
+                    backgroundImage: widget.userProfile.profileImage == ""
                         ? null
-                        : NetworkImage(widget.userProfile!.profileImage!),
+                        : NetworkImage(widget.userProfile.profileImage!),
                     radius: screen_height / 12,
-                    child: widget.userProfile!.profileImage == ""
+                    child: widget.userProfile.profileImage == ""
                         ? Text(
                             username[0],
                             style: TextStyle(
@@ -137,7 +138,7 @@ class account_screen_state extends State<account_screen> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => edit_screen()),
+                      MaterialPageRoute(builder: (context) => edit_screen(widget.userProfile)),
                       );
                 },
                 /*widget.userProfile!.isAuthenticated! ? () async {

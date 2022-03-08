@@ -78,7 +78,7 @@ class home_screen_state extends State<home_screen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => account_screen(userProfile: widget.userProfile)),
+                      MaterialPageRoute(builder: (context) => account_screen(widget.userProfile!)),
                     );
                   },
                   child: ListTile(

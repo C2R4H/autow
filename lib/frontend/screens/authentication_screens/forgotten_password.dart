@@ -59,6 +59,7 @@ class forgotten_password extends StatelessWidget {
                   color: Color(0xff272727),
                 ),
                 child: TextFormField(
+                  autofocus: true,
                   autofillHints: [AutofillHints.email],
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,

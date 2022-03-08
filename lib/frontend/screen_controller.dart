@@ -122,11 +122,11 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
         ],
         selectedLabelStyle: TextStyle(
           fontWeight: FontWeight.w500,
-          fontSize: MediaQuery.of(context).size.height / 55,
+          fontSize: MediaQuery.of(context).size.height / 67,
         ),
         unselectedLabelStyle: TextStyle(
           fontWeight: FontWeight.w500,
-          fontSize: MediaQuery.of(context).size.height / 55,
+          fontSize: MediaQuery.of(context).size.height / 67,
         ),
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
