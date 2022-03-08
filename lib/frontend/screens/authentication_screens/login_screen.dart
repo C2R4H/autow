@@ -64,10 +64,10 @@ class login_screen_state extends State<login_screen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Color(0xff212121),
+                            color: const Color(0xff212121),
                           ),
                           borderRadius: BorderRadius.circular(10),
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                         ),
                         child: TextFormField(
                           autofillHints: [AutofillHints.email],
@@ -86,9 +86,9 @@ class login_screen_state extends State<login_screen> {
                             focusedBorder: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             errorBorder: InputBorder.none,
-                            prefixIcon: Icon(Icons.email_outlined,
+                            prefixIcon: Icon(Icons.person_outlined,
                                 color: Color(0xffBABABA)),
-                            hintText: 'Email',
+                            hintText: 'Username or email address',
                             hintStyle: TextStyle(
                               color: Color(0xffBABABA),
                               fontSize: 15,
@@ -102,10 +102,10 @@ class login_screen_state extends State<login_screen> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Color(0xff212121),
+                            color: const Color(0xff212121),
                           ),
                           borderRadius: BorderRadius.circular(10),
-                          color: Color(0xff272727),
+                          color: const Color(0xff272727),
                         ),
                         child: TextFormField(
                           textInputAction: TextInputAction.done,
@@ -225,7 +225,7 @@ class login_screen_state extends State<login_screen> {
                 ),
                 Container(
                   width: screen_width,
-                  color: Color(0xffBABABA),
+                  color: Colors.grey[800],
                   height: 1,
                 ),
                 Flexible(
@@ -244,7 +244,8 @@ class login_screen_state extends State<login_screen> {
                         text: TextSpan(
                           text: 'Don\'t have an account ?',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Color(0xff676767),
+                            fontWeight: FontWeight.w300,
                           ),
                           children: <TextSpan>[
                             TextSpan(

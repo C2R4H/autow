@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'cache.dart';
+import 'firestore_database.dart';
 
 class AuthMethods {
+  FirestoreDatabaseMethods _firestoreDatabaseMethods =
+      FirestoreDatabaseMethods();
   FirebaseAuth auth = FirebaseAuth.instance;
   String getMessageFromErrorCode(errorCode) {
     switch (errorCode) {
@@ -50,18 +53,16 @@ class AuthMethods {
 
   Future<String> sendPasswordResetEmail(String email) async {
     String success = "";
-    try{
-       await auth.sendPasswordResetEmail(email: email);
-       success = "success";
-    }on FirebaseAuthException catch (e){
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      success = "success";
+    } on FirebaseAuthException catch (e) {
       success = getMessageFromErrorCode(e.code);
-    }catch(e){
-      success = "";
-      print(e);
+    } catch (e) {
+      success = e.toString();
     }
     return success;
   }
-  
 
   Future<String> registerEmailAndPassword(
       String email, String password, String username) async {
@@ -73,13 +74,20 @@ class AuthMethods {
         User user = auth.currentUser!;
         user.updateDisplayName(username);
 
+        Map<String, dynamic> userDataMap = {
+          "id": user.uid,
+          "name": username,
+          "email": email,
+          "picture": "",
+          "registered": DateTime.now().millisecondsSinceEpoch,
+        };
+
+        _firestoreDatabaseMethods.uploadUser(userDataMap, user.uid);
+
         CacheMethods.cacheUserLoggedInState(true);
         CacheMethods.cacheUsernameState(username);
         CacheMethods.cacheUserEmailState(email);
-
-        print(
-            'Registered successfuly \: \n email: $email \n username: $username \n\n');
-      success = "success";
+        success = "success";
       }
     } on FirebaseAuthException catch (e) {
       success = getMessageFromErrorCode(e.code);
@@ -90,12 +98,13 @@ class AuthMethods {
     return success;
   }
 
-  Future<String> loginWithEmailAndPassword(String email, String password) async {
+  Future<String> loginWithEmailAndPassword(
+      String email, String password) async {
     String success = "";
     try {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      User? user = auth.currentUser; 
+      User? user = auth.currentUser;
       String? username = user!.displayName.toString();
 
       await CacheMethods.cacheUserLoggedInState(true);
@@ -126,5 +135,3 @@ class AuthMethods {
     }
   }
 }
-
-

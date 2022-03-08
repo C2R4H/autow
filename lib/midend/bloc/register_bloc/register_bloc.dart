@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../backend/services/authentication.dart';
+import '../../../backend/services/firestore_database.dart';
 import '../../user_profile.dart';
 
 part 'register_state.dart';
@@ -11,6 +12,8 @@ class RegisterBloc extends Bloc<RegisterBlocEvent, RegisterBlocState> {
   RegisterBloc() : super(RegisterBlocStateInputWait()) {
     AuthMethods _authMethods = AuthMethods();
     UserProfile _userProfile = UserProfile();
+    FirestoreDatabaseMethods _firestoreDatabaseMethods =
+        FirestoreDatabaseMethods();
 
     bool emailValidate = false;
     bool usernameValidate = false;
@@ -22,8 +25,14 @@ class RegisterBloc extends Bloc<RegisterBlocEvent, RegisterBlocState> {
     String password = "";
 
     on<RegisterEventUsernameSubmitted>((event, emit) async {
-      if (usernameValidate) {
-        emit(RegisterBlocStateUsernameSubmitted());
+      emit(RegisterBlocStateLoading());
+      print(username);
+      if (await _firestoreDatabaseMethods.doesNameAlreadyExist(username)) {
+        if (usernameValidate) {
+          emit(RegisterBlocStateUsernameSubmitted());
+        }
+      } else {
+        emit(RegisterBlocStateError("This username already exists."));
       }
     });
 
@@ -34,12 +43,14 @@ class RegisterBloc extends Bloc<RegisterBlocEvent, RegisterBlocState> {
     });
 
     on<RegisterEventEmailSubmitted>((event, emit) async {
-      if(emailValidate && passwordValidate && usernameValidate){
+      if (emailValidate && passwordValidate && usernameValidate) {
         emit(RegisterBlocStateLoading());
-        await _authMethods.registerEmailAndPassword(email,password,username).then((e){
-          if(e=="success"){
+        await _authMethods
+            .registerEmailAndPassword(email, password, username)
+            .then((e) {
+          if (e == "success") {
             emit(RegisterBlocStateRegistered());
-          }else{
+          } else {
             emit(RegisterBlocStateError(e));
             emit(RegisterBlocStateInputWait());
           }

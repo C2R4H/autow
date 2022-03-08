@@ -12,6 +12,7 @@ class register_password extends StatefulWidget{
 
 class register_password_state extends State<register_password>{
 
+  final _formKey = GlobalKey<FormState>();
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
   Widget build(BuildContext context){
@@ -42,7 +43,11 @@ class register_password_state extends State<register_password>{
           ),
         ),
         SizedBox(height: 15),
-        Container(
+        Form(
+            key: _formKey,
+        child: Column(
+        children: [
+          Container(
           padding: EdgeInsets.symmetric(horizontal: 5),
           alignment: Alignment.center,
           decoration: BoxDecoration(
@@ -55,7 +60,6 @@ class register_password_state extends State<register_password>{
           child: TextField(
             textInputAction: TextInputAction.next,
             autofocus: true,
-            keyboardType: TextInputType.visiblePassword,
             onChanged: (password) {
               widget._registerBloc.add(RegisterEventPasswordChanged(password));
             },
@@ -113,7 +117,7 @@ class register_password_state extends State<register_password>{
               color: Colors.white,
             ),
             textAlignVertical: TextAlignVertical.center,
-            obscureText: obscureConfirmPassword,
+            obscureText: obscurePassword,
             decoration: InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -141,6 +145,9 @@ class register_password_state extends State<register_password>{
               ),
             ),
           ),
+        ),
+        ],
+        ),
         ),
         SizedBox(height: 15),
         BlocBuilder<RegisterBloc, RegisterBlocState>(builder: (context, state) {

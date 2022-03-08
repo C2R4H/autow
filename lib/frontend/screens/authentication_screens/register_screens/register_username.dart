@@ -42,7 +42,7 @@ Widget register_username(context, RegisterBloc _registerBloc) {
             keyboardType: TextInputType.visiblePassword,
             autofocus: true,
             onChanged: (username) {
-              _registerBloc.add(RegisterEventUsernameChanged(username));
+              _registerBloc.add(RegisterEventUsernameChanged(username.toLowerCase()));
             },
             style: TextStyle(
               color: Colors.white,
@@ -66,9 +66,14 @@ Widget register_username(context, RegisterBloc _registerBloc) {
         SizedBox(height: 15),
         BlocBuilder<RegisterBloc, RegisterBlocState>(builder: (context, state) {
           if (state is RegisterBlocStateUsernameValid) {
-            return register_button(_registerBloc,MediaQuery.of(context).size.width, true);
+            return register_button(
+                _registerBloc, MediaQuery.of(context).size.width, true);
           }
-          return register_button(_registerBloc,MediaQuery.of(context).size.width, false);
+          if (state is RegisterBlocStateLoading) {
+            return const CircularProgressIndicator.adaptive();
+          }
+          return register_button(
+              _registerBloc, MediaQuery.of(context).size.width, false);
         }),
       ],
     ),

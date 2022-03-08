@@ -32,7 +32,7 @@ Widget register_email(context, RegisterBloc _registerBloc) {
             autofocus: true,
             keyboardType: TextInputType.emailAddress,
             onChanged: (email) {
-              _registerBloc.add(RegisterEventEmailChanged(email));
+              _registerBloc.add(RegisterEventEmailChanged(email.toLowerCase()));
             },
             style: TextStyle(
               color: Colors.white,
