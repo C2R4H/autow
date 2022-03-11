@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart' as path;
 
 import '../../../midend/user_profile.dart';
-
-part 'account_screens/edit_screen.dart';
+import 'account_screens/edit_screen.dart';
 
 class account_screen extends StatefulWidget {
   UserProfile userProfile;
@@ -18,8 +13,6 @@ class account_screen extends StatefulWidget {
 class account_screen_state extends State<account_screen> {
   String username = "";
   bool isLoading = false;
-  final ImagePicker _picker = ImagePicker();
-  FirebaseStorage storage = FirebaseStorage.instance;
 
   void initState() {
     username = widget.userProfile.username!;
@@ -28,41 +21,6 @@ class account_screen_state extends State<account_screen> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _upload(String inputSource) async {
-      final picker = ImagePicker();
-      XFile? pickedImage;
-      try {
-        pickedImage = await picker.pickImage(
-            source: inputSource == 'camera'
-                ? ImageSource.camera
-                : ImageSource.gallery,
-            imageQuality: 50,
-            maxWidth: 1920);
-
-        final String fileName = path.basename(pickedImage!.path);
-        File imageFile = File(pickedImage.path);
-
-        try {
-          Reference reference =
-              storage.ref().child('profilePictures/').child('$username.jpg');
-          if (widget.userProfile.profileImage != "") {
-            await reference.delete();
-          }
-          UploadTask uploadTask = reference.putFile(imageFile);
-          uploadTask.whenComplete(() async {
-            String imageUrl = await reference.getDownloadURL();
-            if (imageUrl != null) {
-              await widget.userProfile.uploadProfilePictureURL(imageUrl);
-            }
-          });
-        } on FirebaseException catch (err) {
-          print(err);
-        }
-      } catch (err) {
-        print(err);
-      }
-    }
-
     double screen_height = MediaQuery.of(context).size.height;
     double screen_width = MediaQuery.of(context).size.width;
     return Scaffold(

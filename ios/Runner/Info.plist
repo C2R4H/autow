@@ -28,13 +28,13 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-  <key>UISupportedInterfaceOrientations</key>
-  <string>Upload images for screen background</string>
-  <key>NSPhotoLibraryUsageDescription</key>
-  <string>Upload image from camera for screen background</string>
-  <key>NSCameraUsageDescription</key>
-  <string>Post videos to profile</string>
-  <key>NSMicrophoneUsageDescription</key>
+	<key>UISupportedInterfaceOrientations</key>
+	<string>Upload images for screen background</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Upload image from camera for screen background</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Post videos to profile</string>
+	<key>NSMicrophoneUsageDescription</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>

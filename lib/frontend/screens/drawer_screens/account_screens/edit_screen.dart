@@ -1,44 +1,18 @@
-part of '../account_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
+
+import '../../../../midend/user_profile.dart';
+import '../../../../midend/bloc/editAccount_bloc/editAccount_bloc.dart';
 
 class edit_screen extends StatelessWidget {
-
   UserProfile userProfile;
   edit_screen(this.userProfile);
 
-  FirebaseStorage storage = FirebaseStorage.instance;
-    Future<void> _upload(String inputSource) async {
-      final picker = ImagePicker();
-      XFile? pickedImage;
-      try {
-        pickedImage = await picker.pickImage(
-            source: inputSource == 'camera'
-                ? ImageSource.camera
-                : ImageSource.gallery,
-            imageQuality: 50,
-            maxWidth: 1920);
-
-        final String fileName = path.basename(pickedImage!.path);
-        File imageFile = File(pickedImage.path);
-
-        try {
-          Reference reference = storage.ref().child('profilePictures/').child('${userProfile.username}.jpg');
-          if (userProfile.profileImage != "") {
-            await reference.delete();
-          }
-          UploadTask uploadTask = reference.putFile(imageFile);
-          uploadTask.whenComplete(() async {
-            String imageUrl = await reference.getDownloadURL();
-            if (imageUrl != null) {
-              await userProfile.uploadProfilePictureURL(imageUrl);
-            }
-          });
-        } on FirebaseException catch (err) {
-          print(err);
-        }
-      } catch (err) {
-        print(err);
-      }
-    }
+  EditAccountBloc editAccountBloc = EditAccountBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -48,37 +22,51 @@ class edit_screen extends StatelessWidget {
         backgroundColor: Color(0xff121212),
         title: Text('Edit profile'),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        color: Colors.black,
-        child: ListView(
-          children: [
-            CircleAvatar(
-                    backgroundColor: Color(0xff414141),
-                    backgroundImage: userProfile.profileImage == ""
-                        ? null
-                        : NetworkImage(userProfile.profileImage!),
-                    radius: screen_height / 12,
-                    child: userProfile.profileImage == ""
-                        ? Text(
-                            userProfile.username![0],
-                            style: TextStyle(
-                              fontSize: screen_height / 15,
-                              color: Colors.white,
-                            ),
-                          )
-                        : null,
+      body: BlocProvider(
+        create: (context) => editAccountBloc,
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          color: Colors.black,
+          child: BlocListener(
+            bloc: editAccountBloc,
+            listener: (context, state) {},
+            child: ListView(
+              children: [
+                CircleAvatar(
+                  backgroundImage: userProfile.profileImage == ""
+                      ? null
+                      : NetworkImage(userProfile.profileImage!),
+                  radius: 60,
+                  backgroundColor: Color(0xff414141),
+                  child: userProfile.profileImage == ""
+                      ? Text(
+                          userProfile.username![0],
+                          style: TextStyle(
+                            fontSize: screen_height / 20,
+                            color: Colors.white,
+                          ),
+                        )
+                      : null,
+                ),
+                BlocBuilder<EditAccountBloc, EditAccountState>(
+                    bloc: editAccountBloc,
+                    builder: (context, state) {
+                      if(state is EditAccountStateLoading){
+                        return const CircularProgressIndicator.adaptive();
+                      }
+                      return TextButton(
+                        onPressed: () {
+                          editAccountBloc.add(ChangeProfilePictureEvent(userProfile));
+                        },
+                        child: Container(
+                          child: Text('Upload image'),
+                        ),
+                      );
+                    }),
+              ],
             ),
-            TextButton(
-              onPressed: () async {
-                await _upload('gallery');
-              },
-              child: Container(
-                child: Text('Upload image'),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

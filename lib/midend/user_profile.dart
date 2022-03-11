@@ -10,12 +10,14 @@ class UserProfile {
   String? username = "AutoW";
   String? email = "AutoW";
   String? profileImage = "";
+  String? uid = "";
 
   Future<bool?> getData() async {
     username = await CacheMethods.getCachedUsernameState();
     email = await CacheMethods.getCachedUserEmailState();
     profileImage = await CacheMethods.getCachedProfilePictureURL();
     isAuthenticated = await CacheMethods.getCachedUserLoggedInState();
+    //Create cachemethods for uid
     if (username == null || email == null || profileImage == "" || isAuthenticated == null  || profileImage == null ) {
       User? user = authMethods.auth.currentUser;
       if (user != null) {
@@ -29,20 +31,19 @@ class UserProfile {
         if(user.photoURL.toString()!="null"){
           profileImage = user.photoURL.toString();
         }
+        uid = user.uid.toString();
       }else{
         isAuthenticated = false;
         username = "AutoW";
         email = "AutoW";
         profileImage = "";
       }
+      print(isAuthenticated);
+      print(username);
+      print(email);
+      print(profileImage);
+      print(uid);
     }
   return true;
-  }
-
-  Future uploadProfilePictureURL(String downloadURL) async {
-    User? user = authMethods.auth.currentUser;
-    await CacheMethods.cacheProfilePictureURL(downloadURL);
-    await user!.updatePhotoURL(downloadURL);
-    profileImage = downloadURL;
   }
 }

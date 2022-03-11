@@ -37,8 +37,8 @@ class login_screen_state extends State<login_screen> {
       backgroundColor: Color(0xff121212),
       body: BlocProvider(
         create: (context) => _loginBloc,
-        child: SafeArea(
-          child: Container(
+        child: 
+           Container(
             margin: EdgeInsets.symmetric(horizontal: 15),
             width: screen_width,
             height: screen_height,
@@ -233,7 +233,8 @@ class login_screen_state extends State<login_screen> {
                   ),
                   Flexible(
                     flex: 1,
-                    child: Container(
+                    child: SafeArea(
+                        child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: InkWell(
                         onTap: () {
@@ -261,12 +262,12 @@ class login_screen_state extends State<login_screen> {
                       ),
                     ),
                   ),
+                  ),
                 ],
               ),
             ),
           ),
         ),
-      ),
     );
   }
 }

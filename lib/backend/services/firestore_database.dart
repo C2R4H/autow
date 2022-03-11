@@ -11,6 +11,13 @@ class FirestoreDatabaseMethods {
     });
   }
 
+  Future<bool> uploadUserProfilePictureURL(String url,uid) async {
+    await firestore.collection("users").doc(uid).update({'picture': url}).whenComplete((){
+      return true;
+    });
+    return false;
+  }
+
   getUserByEmail(String email) async {
     return firestore
         .collection("users")
