@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../midend/user_profile.dart';
+import '../../widgets/profilePicture_widget.dart';
 import 'account_screens/edit_screen.dart';
 
 class account_screen extends StatefulWidget {
@@ -11,14 +12,6 @@ class account_screen extends StatefulWidget {
 }
 
 class account_screen_state extends State<account_screen> {
-  String username = "";
-  bool isLoading = false;
-
-  void initState() {
-    username = widget.userProfile.username!;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     double screen_height = MediaQuery.of(context).size.height;
@@ -46,28 +39,13 @@ class account_screen_state extends State<account_screen> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xff414141),
-                    backgroundImage: widget.userProfile.profileImage == ""
-                        ? null
-                        : NetworkImage(widget.userProfile.profileImage!),
-                    radius: screen_height / 12,
-                    child: widget.userProfile.profileImage == ""
-                        ? Text(
-                            username[0],
-                            style: TextStyle(
-                              fontSize: screen_height / 15,
-                              color: Colors.white,
-                            ),
-                          )
-                        : null,
-                  ),
+                  profilePicture(100,widget.userProfile),
                   SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        username,
+                        widget.userProfile.username!,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: screen_height / 30,
@@ -92,38 +70,22 @@ class account_screen_state extends State<account_screen> {
                 ],
               ),
               SizedBox(height: 15),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => edit_screen(widget.userProfile)),
                       );
                 },
-                /*widget.userProfile!.isAuthenticated! ? () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await _upload('gallery');
-                  setState(() {
-                    isLoading = false;
-                  });
-                }: null,*/
-                color: Colors.grey[900],
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  side: BorderSide(
-                    color: Color(0xff313131),
-                    width: 1,
-                  ),
-                ),
-                height: screen_height / 15,
+                style: TextButton.styleFrom(
+                           primary: Colors.white,
+                           backgroundColor: Color(0xff272727),
+                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                           ),
                 child: Container(
                   alignment: Alignment.center,
                   width: screen_width,
-                  child: isLoading
-                      ? CircularProgressIndicator.adaptive(
-                          backgroundColor: Colors.white)
-                      : Text(
+                  child: Text(
                           'Edit profile',
                           style: TextStyle(
                             color: Colors.white,

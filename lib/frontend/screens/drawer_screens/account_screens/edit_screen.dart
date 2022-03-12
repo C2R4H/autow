@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart' as path;
 
 import '../../../../midend/user_profile.dart';
 import '../../../../midend/bloc/editAccount_bloc/editAccount_bloc.dart';
+import '../../../widgets/alertdialog.dart';
+import '../../../widgets/profilePicture_widget.dart';
 
 class edit_screen extends StatelessWidget {
   UserProfile userProfile;
@@ -30,25 +28,17 @@ class edit_screen extends StatelessWidget {
           color: Colors.black,
           child: BlocListener(
             bloc: editAccountBloc,
-            listener: (context, state) {},
-            child: ListView(
+            listener: (context, state) {
+              if(state is EditAccountStateError){
+                showDialog(
+                    context: context,
+                    builder: (context) => errorDialog(context, state.message),
+                    );
+              }
+            },
+            child: Column(
               children: [
-                CircleAvatar(
-                  backgroundImage: userProfile.profileImage == ""
-                      ? null
-                      : NetworkImage(userProfile.profileImage!),
-                  radius: 60,
-                  backgroundColor: Color(0xff414141),
-                  child: userProfile.profileImage == ""
-                      ? Text(
-                          userProfile.username![0],
-                          style: TextStyle(
-                            fontSize: screen_height / 20,
-                            color: Colors.white,
-                          ),
-                        )
-                      : null,
-                ),
+                profilePicture(100,userProfile),
                 BlocBuilder<EditAccountBloc, EditAccountState>(
                     bloc: editAccountBloc,
                     builder: (context, state) {

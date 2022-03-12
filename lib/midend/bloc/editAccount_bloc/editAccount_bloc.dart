@@ -40,6 +40,8 @@ class EditAccountBloc extends Bloc<EditAccountEvent, EditAccountState> {
           _authMethods.auth.currentUser!.updatePhotoURL(url);
           event.userProfile.profileImage = url;
         }
+      }else{
+        emit(EditAccountStateError("No picture choosed"));
       }
     });
   }

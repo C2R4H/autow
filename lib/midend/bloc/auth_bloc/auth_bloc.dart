@@ -8,7 +8,7 @@ part 'auth_event.dart';
 
 class AuthBloc extends Bloc<AuthBlocEvent, AuthBlocState>{
   AuthBloc() : super(AuthBlocStateInitialize()){
-    UserProfile? userProfile = UserProfile();
+    UserProfile userProfile = UserProfile();
 
     on<AppStarted>((event, emit) async {
       try{

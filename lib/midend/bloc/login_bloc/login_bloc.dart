@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 
 import '../../../backend/services/authentication.dart';
 import '../../../backend/services/firestore_database.dart';
-import '../../user_profile.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -11,7 +10,6 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
   LoginBloc() : super(LoginBlocStateWaitingForInput()) {
     AuthMethods _authMethods = AuthMethods();
-    UserProfile userProfile = UserProfile();
     FirestoreDatabaseMethods _firestoreDatabaseMethods =
         FirestoreDatabaseMethods();
     bool emailValidate = false;
@@ -34,8 +32,7 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
             .then((e) async {
           code = e;
           if (code == "success") {
-            await userProfile.getData();
-            emit(LoginBlocStateLoggedIn(userProfile));
+            emit(LoginBlocStateLoggedIn());
           } else {
             emit(LoginBlocStateError(code));
             emit(LoginBlocStateWaitingForInput());

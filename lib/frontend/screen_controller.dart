@@ -18,7 +18,6 @@ class screen_controller extends StatefulWidget {
 
 class screen_controller_state extends State<screen_controller> {
   AuthMethods authMethods = AuthMethods();
-  UserProfile userProfile = UserProfile();
 
   final PageController _myPage = PageController(initialPage: 0);
   int _selectedIndex = 0;
@@ -66,9 +65,9 @@ class screen_controller_state extends State<screen_controller> {
                 ),
               ),
             );
-          } else if (state is AuthBlocStateAuthenticated) {
+          } if (state is AuthBlocStateAuthenticated) {
             return screenController(context, _selectedIndex, _myPage,state,_onItemTapped);
-          } else if (state is AuthBlocStateUnaunthenticated) {
+          } if (state is AuthBlocStateUnaunthenticated) {
             return screenController(context, _selectedIndex, _myPage,state,_onItemTapped);
           }
           return Container();
@@ -137,7 +136,7 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
       controller: _myPage,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        home_screen(userProfile: state.userProfile),
+        home_screen(state.userProfile),
         favorites_screen(),
         add_post_screen(),
         messages_screen(),

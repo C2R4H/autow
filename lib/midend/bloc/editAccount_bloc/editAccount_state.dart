@@ -38,4 +38,7 @@ class EditAccountStatePasswordCopyWith extends EditAccountState{
   List<Object?> get props => [password];
 }
 
-
+class EditAccountStateError extends EditAccountState{
+  final message;
+  EditAccountStateError(this.message);
+}

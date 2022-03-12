@@ -1,30 +1,22 @@
 import 'package:flutter/material.dart';
 
-import '../../screen_controller.dart';
 import '../drawer_screens/settings_screen.dart';
 import '../bottomAppBar_screens/add_post_screen.dart';
 import '../drawer_screens/account_screen.dart';
 
 import '../../widgets/post_half_widget.dart';
+import '../../widgets/profilePicture_widget.dart';
 import '../../../backend/services/cache.dart';
 import '../../../midend/user_profile.dart';
 
 class home_screen extends StatefulWidget {
-  UserProfile? userProfile;
-  home_screen({this.userProfile});
+  UserProfile userProfile;
+  home_screen(this.userProfile);
   @override
   home_screen_state createState() => home_screen_state();
 }
 
 class home_screen_state extends State<home_screen> {
-  String username = '';
-
-  @override
-  void initState() {
-    username = widget.userProfile!.username!;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -44,21 +36,10 @@ class home_screen_state extends State<home_screen> {
                 color: Colors.black,
                 child: Row(
                   children: [
-                    CircleAvatar(
-                      backgroundImage: widget.userProfile!.profileImage == "" ? null : NetworkImage(widget.userProfile!.profileImage!),
-                      backgroundColor: Color(0xff424242),
-                      radius: 40,
-                      child: widget.userProfile!.profileImage! == "" ? Text(
-                          username[0],
-                          style:TextStyle(
-                              color: Colors.white,
-                              fontSize: screen_height/20,
-                              ),
-                          ) : null ,
-                    ),
+                    profilePicture(80,widget.userProfile,),
                     SizedBox(width: 10),
                     Text(
-                      username,
+                      widget.userProfile.username!,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -78,7 +59,9 @@ class home_screen_state extends State<home_screen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => account_screen(widget.userProfile!)),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              account_screen(widget.userProfile)),
                     );
                   },
                   child: ListTile(
@@ -142,8 +125,9 @@ class home_screen_state extends State<home_screen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  settings_screen(authState: widget.userProfile!.isAuthenticated)),
+                              builder: (context) => settings_screen(
+                                  authState:
+                                      widget.userProfile.isAuthenticated)),
                         );
                       });
                     },
@@ -246,50 +230,6 @@ class home_screen_state extends State<home_screen> {
                 post_half_widget(context),
               ],
             ),
-
-            //This will go in widget folder!
-            /*Container(
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height / 4.5,
-                    color: Colors.red,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
-                      children: [
-                        Text(
-                          'BMW M4 Competition',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          '(Model 2021)',
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                        ),
-                        Spacer(),
-                        Text(
-                          '\$33,000',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),*/
           ],
         ),
       ),

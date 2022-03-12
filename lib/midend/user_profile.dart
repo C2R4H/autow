@@ -12,6 +12,9 @@ class UserProfile {
   String? profileImage = "";
   String? uid = "";
 
+  UserProfile() {
+    getData();
+  }
   Future<bool?> getData() async {
     username = await CacheMethods.getCachedUsernameState();
     email = await CacheMethods.getCachedUserEmailState();
@@ -38,11 +41,13 @@ class UserProfile {
         email = "AutoW";
         profileImage = "";
       }
+      /*
       print(isAuthenticated);
       print(username);
       print(email);
       print(profileImage);
       print(uid);
+      */
     }
   return true;
   }

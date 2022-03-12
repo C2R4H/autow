@@ -13,13 +13,7 @@ class LoginBlocStateWaitingForInput extends LoginBlocState{}
 
 class LoginBlocStateLoading extends LoginBlocState{}
 
-class LoginBlocStateLoggedIn extends LoginBlocState{
-  final UserProfile userProfile;
-  LoginBlocStateLoggedIn(this.userProfile);
-
-  @override
-  List<Object> get props => [userProfile];
-}
+class LoginBlocStateLoggedIn extends LoginBlocState{}
 
 class LoginBlocStateError extends LoginBlocState{
   final String message;

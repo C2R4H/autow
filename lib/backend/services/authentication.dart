@@ -110,9 +110,6 @@ class AuthMethods {
       await CacheMethods.cacheUserLoggedInState(true);
       await CacheMethods.cacheUsernameState(username);
       await CacheMethods.cacheUserEmailState(email);
-
-      print(
-          'Login successfuly \: \n email: $email \n username: $username \n\n');
       success = "success";
     } on FirebaseAuthException catch (e) {
       success = getMessageFromErrorCode(e.code);
