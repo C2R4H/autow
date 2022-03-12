@@ -23,9 +23,7 @@ class account_screen_state extends State<account_screen> {
         backgroundColor: Color(0xff121212).withOpacity(0.92),
         elevation: 0,
       ),
-      body: 
-           Container(
-        padding: EdgeInsets.symmetric( horizontal: 15),
+      body: Container(
         color: Colors.black,
         child: RefreshIndicator(
           color: Color(0xffFF7171),
@@ -39,7 +37,7 @@ class account_screen_state extends State<account_screen> {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  profilePicture(100,widget.userProfile),
+                  profilePicture(100, widget.userProfile),
                   SizedBox(width: 10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,25 +71,21 @@ class account_screen_state extends State<account_screen> {
               TextButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => edit_screen(widget.userProfile)),
-                      );
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => edit_screen(widget.userProfile)),
+                  );
                 },
                 style: TextButton.styleFrom(
-                           primary: Colors.white,
-                           backgroundColor: Color(0xff272727),
-                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                           ),
+                  primary: Colors.white,
+                  backgroundColor: const Color(0xff272727),
+                  textStyle: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      ),
+                ),
                 child: Container(
                   alignment: Alignment.center,
-                  width: screen_width,
-                  child: Text(
-                          'Edit profile',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
+                  child: Text('Edit profile'),
                 ),
               ),
             ],

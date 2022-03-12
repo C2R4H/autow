@@ -64,6 +64,36 @@ class AuthMethods {
     return success;
   }
 
+  Future<String> updateAuthUsername(String username) async {
+    String success = "Username Error";
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      user.updateDisplayName(username);
+      success = 'success';
+    }
+    return success;
+  }
+
+  Future<String> updatePassword(String password, String newPassword) async {
+    String success = "";
+    User? user = FirebaseAuth.instance.currentUser;
+    final cred =
+        EmailAuthProvider.credential(email: user!.email!, password: password);
+
+    await user.reauthenticateWithCredential(cred).then((value) async {
+      await user.updatePassword(newPassword).then((_) {
+        success = 'success';
+      }).catchError((error) {
+        success = error.toString();
+      });
+    }).catchError((err) {
+        success = err.toString();
+    });
+
+
+    return success;
+  }
+
   Future<String> registerEmailAndPassword(
       String email, String password, String username) async {
     String success = "";

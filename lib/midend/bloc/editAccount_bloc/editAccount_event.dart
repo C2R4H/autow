@@ -15,6 +15,14 @@ class ChangeProfilePictureEvent extends EditAccountEvent{
   List<Object> get props => [userProfile];
 }
 
+class SubmitUsernameEvent extends EditAccountEvent{
+  final UserProfile userProfile;
+  const SubmitUsernameEvent(this.userProfile);
+
+  @override
+  List<Object> get props => [userProfile];
+}
+
 class ChangeUsernameEvent extends EditAccountEvent{
   final String username;
   const ChangeUsernameEvent(this.username);
@@ -23,11 +31,22 @@ class ChangeUsernameEvent extends EditAccountEvent{
   List<Object> get props => [username];
 }
 
-class ChangePasswordEvent extends EditAccountEvent{
+class SubmitPasswordEvent extends EditAccountEvent{}
+
+class ChangeCurrentPasswordEvent extends EditAccountEvent{
   final String password;
-  const ChangePasswordEvent(this.password);
+  const ChangeCurrentPasswordEvent(this.password);
 
   @override
   List<Object> get props => [password];
 }
+
+class ChangeNewPasswordEvent extends EditAccountEvent{
+  final String password;
+  const ChangeNewPasswordEvent(this.password);
+
+  @override
+  List<Object> get props => [password];
+}
+
 
