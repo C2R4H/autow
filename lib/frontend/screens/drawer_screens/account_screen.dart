@@ -13,8 +13,8 @@ class account_screen extends StatefulWidget {
 }
 
 class account_screen_state extends State<account_screen> {
-
-  String login_information = "Please login to see your profile posts and change or add a profile picture.";
+  String login_information =
+      "Please login to see your profile posts and change or add a profile picture.";
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,8 @@ class account_screen_state extends State<account_screen> {
       ),
       body: widget.userProfile.isAuthenticated!
           ? userLogged_screen(context, widget.userProfile, screen_height)
-          : userNotLogged_widget(context,screen_width, screen_height,login_information,Icons.person_outlined),
+          : userNotLogged_widget(context, screen_width, screen_height,
+              login_information, Icons.person_outlined),
     );
   }
 }
