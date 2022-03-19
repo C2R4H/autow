@@ -18,6 +18,13 @@ class FirestoreDatabaseMethods {
     return false;
   }
 
+  Future<bool> uploadUsername(String username,uid) async {
+    await firestore.collection("users").doc(uid).update({'name': username}).whenComplete((){
+      return true;
+    });
+    return false;
+  }
+
   getUserByEmail(String email) async {
     return firestore
         .collection("users")

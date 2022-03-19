@@ -19,25 +19,39 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
 
     String email = "";
     String password = "";
+
     on<LoginSubmitted>((event, emit) async {
       String code = "";
       try {
         emit(LoginBlocStateWaitingForInput());
         emit(LoginBlocStateLoading());
-        if(username){
-          email = await _firestoreDatabaseMethods.getUserByName(email);
+        if (username) {
+          await _firestoreDatabaseMethods.getUserByName(email).then((e) async {
+            await _authMethods
+                .loginWithEmailAndPassword(e, password)
+                .then((error) async {
+              code = error;
+              if (code == "success") {
+                emit(LoginBlocStateLoggedIn());
+              } else {
+                emit(LoginBlocStateError(code));
+                emit(LoginBlocStateWaitingForInput());
+              }
+            });
+          });
+        } else {
+          await _authMethods
+              .loginWithEmailAndPassword(email, password)
+              .then((e) async {
+            code = e;
+            if (code == "success") {
+              emit(LoginBlocStateLoggedIn());
+            } else {
+              emit(LoginBlocStateError(code));
+              emit(LoginBlocStateWaitingForInput());
+            }
+          });
         }
-        await _authMethods
-            .loginWithEmailAndPassword(email, password)
-            .then((e) async {
-          code = e;
-          if (code == "success") {
-            emit(LoginBlocStateLoggedIn());
-          } else {
-            emit(LoginBlocStateError(code));
-            emit(LoginBlocStateWaitingForInput());
-          }
-        });
       } catch (e) {
         emit(LoginBlocStateError(code));
         emit(LoginBlocStateWaitingForInput());
@@ -47,13 +61,12 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
     on<LoginEmailChanged>((event, emit) async {
       emit(LoginBlocStateEmailCopy(event.email));
 
-      //RegExp 
+      //RegExp
       RegExp regexpUsername =
           RegExp("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]\$");
       String pattern =
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
       RegExp regexpEmail = RegExp(pattern);
-
 
       email = event.email;
       if (regexpUsername.hasMatch(event.email)) {
@@ -63,7 +76,7 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
         if (passwordValidate) {
           emit(LoginBlocStateValidate());
         }
-      }else if(regexpEmail.hasMatch(event.email)){
+      } else if (regexpEmail.hasMatch(event.email)) {
         emit(LoginBlocStateEmailValid());
         emailValidate = true;
         username = false;
@@ -88,6 +101,7 @@ class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
         }
       } else {
         emit(LoginBlocStateInValid());
+        passwordValidate = false;
       }
     });
   }

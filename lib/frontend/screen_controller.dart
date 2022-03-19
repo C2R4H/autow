@@ -103,7 +103,7 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
             activeIcon: Icon(Icons.favorite),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_box),
+            icon: Icon(Icons.add_box,color: Color(0xff51A0D5)),
             label: 'New Post',
             backgroundColor: const Color(0xff212121),
           ),
@@ -121,11 +121,11 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
         ],
         selectedLabelStyle: TextStyle(
           fontWeight: FontWeight.w500,
-          fontSize: MediaQuery.of(context).size.height / 67,
+          fontSize: MediaQuery.of(context).size.height / 55,
         ),
         unselectedLabelStyle: TextStyle(
           fontWeight: FontWeight.w500,
-          fontSize: MediaQuery.of(context).size.height / 67,
+          fontSize: MediaQuery.of(context).size.height / 55,
         ),
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.white,
@@ -137,10 +137,10 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
       physics: const NeverScrollableScrollPhysics(),
       children: [
         home_screen(state.userProfile),
-        favorites_screen(),
+        favorites_screen(state.userProfile),
         add_post_screen(),
-        messages_screen(),
-        my_posts_screen(),
+        messages_screen(state.userProfile),
+        posts_screen(state.userProfile),
       ],
     ),
   );

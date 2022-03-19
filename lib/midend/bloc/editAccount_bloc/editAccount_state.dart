@@ -2,11 +2,12 @@ part of 'editAccount_bloc.dart';
 
 class EditAccountState extends Equatable{
   String? username;
-  String? password;
+  String? currentPassword;
+  String? newPassword;
   UserProfile? userProfile;
 
   @override
-  List<Object?> get props => [username,password];
+  List<Object?> get props => [username,currentPassword,newPassword];
 }
 
 class EditAccountStateLoading extends EditAccountState{}
@@ -30,13 +31,20 @@ class EditAccountStateUsernameCopyWith extends EditAccountState{
 }
 
 class EditAccountStatePasswordSend extends EditAccountState{}
-class EditAccountStatePasswordValidate extends EditAccountState{}
-class EditAccountStatePasswordCopyWith extends EditAccountState{
-  EditAccountStatePasswordCopyWith(password);
+class EditAccountStateCurrentPasswordValidate extends EditAccountState{}
+class EditAccountStateCurrentPasswordCopyWith extends EditAccountState{
+  EditAccountStateCurrentPasswordCopyWith(currentPassword);
 
   @override
-  List<Object?> get props => [password];
+  List<Object?> get props => [currentPassword];
 }
+
+class EditAccountStateNewPasswordValidate extends EditAccountState{}
+class EditAccountStateNewPasswordCopyWith extends EditAccountState{
+  EditAccountStateNewPasswordCopyWith(newPassword);
+}
+
+class EditAccountStateCurrentPasswordAndNewPasswordValidate extends EditAccountState{}
 
 class EditAccountStateError extends EditAccountState{
   final message;

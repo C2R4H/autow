@@ -49,7 +49,7 @@ class login_screen_state extends State<login_screen> {
                 children: [
                   Spacer(),
                   Text(
-                    'AutoW',
+                    'Login',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: screen_height / 20,
