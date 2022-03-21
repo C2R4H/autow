@@ -88,7 +88,7 @@ class home_screen_state extends State<home_screen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => add_post_screen()),
+                          builder: (context) => add_post_screen(widget.userProfile)),
                     );
                   },
                   child: ListTile(
@@ -112,11 +112,6 @@ class home_screen_state extends State<home_screen> {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => add_post_screen()),
-                    );
                   },
                   child: ListTile(
                     onTap: () async {

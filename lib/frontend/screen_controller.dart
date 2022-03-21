@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../backend/services/authentication.dart';
-import '../midend/user_profile.dart';
 import '../midend/bloc/auth_bloc/auth_bloc.dart';
 
 import 'screens/bottomAppBar_screens/home_screen.dart';
@@ -22,7 +21,7 @@ class screen_controller_state extends State<screen_controller> {
   final PageController _myPage = PageController(initialPage: 0);
   int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index,state) {
     setState(() {
       if (index != 2) {
         _selectedIndex = index;
@@ -35,7 +34,7 @@ class screen_controller_state extends State<screen_controller> {
     } else if (index == 2) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => add_post_screen()),
+        MaterialPageRoute(builder: (context) => add_post_screen(state.userProfile)),
       );
     } else if (index == 3) {
       _myPage.jumpToPage(3);
@@ -87,7 +86,9 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
       ),
       child: BottomNavigationBar(
         backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        onTap: _onItemTapped,
+        onTap: (nr) {
+          _onItemTapped(nr,state);
+        },
         type: BottomNavigationBarType.fixed,
         elevation: 0,
         items: const <BottomNavigationBarItem>[
@@ -138,7 +139,7 @@ Widget screenController(context,int _selectedIndex, PageController _myPage, stat
       children: [
         home_screen(state.userProfile),
         favorites_screen(state.userProfile),
-        add_post_screen(),
+        add_post_screen(state.userProfile),
         messages_screen(state.userProfile),
         posts_screen(state.userProfile),
       ],
