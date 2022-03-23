@@ -16,3 +16,8 @@ class NewPostEventLoadBrandModels extends NewPostEvent{
   int brandID;
   NewPostEventLoadBrandModels(this.modelsList,this.brandID);
 }
+
+class NewPostEventBrandCopyWith extends NewPostEvent{
+  final String text;
+  const NewPostEventBrandCopyWith(this.text);
+}

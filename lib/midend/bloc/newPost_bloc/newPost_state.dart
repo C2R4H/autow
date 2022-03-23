@@ -26,3 +26,9 @@ class NewPostStateError extends NewPostState{
   String error;
   NewPostStateError(this.error);
 }
+
+class NewPostStateBrandsSearched extends NewPostState{
+  List searchedList;
+  NewPostStateBrandsSearched(this.searchedList);
+}
+

@@ -16,125 +16,115 @@ class brands_state extends State<brands> {
   Automobiles automobiles_model = Automobiles();
   List automobilesList = [];
 
-
   void initState() {
     _newPostBloc.add(NewPostEventLoadBrands());
     super.initState();
   }
 
-  /*void _runFilter(String enteredKeyword) {
-    List results = [];
-    if (enteredKeyword.isEmpty) {
-      // if the search field is empty or only contains white-space, we'll display all users
-      results = _allUsers;
-    } else {
-      results = _allUsers
-          .where((user) =>
-              user["name"].toLowerCase().contains(enteredKeyword.toLowerCase()))
-          .toList();
-      // we use the toLowerCase() method to make it case-insensitive
-    }
-
-    // Refresh the UI
-    setState(() {
-      _foundUsers = results;
-    });
-  }*/
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        bottom: PreferredSize(
-            child: Container(
+    return BlocProvider(
+      create: (context) => _newPostBloc,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Container(
+            width: double.infinity,
+            height: 40,
+            decoration: BoxDecoration(
               color: const Color(0xff212121),
-              height: 1.0,
+              borderRadius: BorderRadius.circular(5),
             ),
-            preferredSize: Size.fromHeight(4.0)),
-        title: Text('Brands'),
-        centerTitle: false,
-      ),
-      body: BlocProvider(
-        create: (context) => _newPostBloc,
-        child: Column(
-            children: [
-              TextField(
-              onChanged: (value) => print(value),
-              decoration: const InputDecoration(
-                  labelText: 'Search', suffixIcon: Icon(Icons.search)),
+            child: Center(
+              child: TextField(
+                onChanged: (value) =>
+                    _newPostBloc.add(NewPostEventBrandCopyWith(value)),
+                autofocus: true,
+                decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    focusColor: Colors.white,
+                    hintText: 'BMW,Audi,Dacia...',
+                    prefixIcon: Icon(Icons.search,color: Color(0xff515151))),
+              ),
             ),
-            BlocBuilder<NewPostBloc, NewPostState>(
-          builder: (context, state) {
-            print(state);
-            if (state is NewPostStateLoading) {
-              return Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-            if (state is NewPostStateLoadedBrands) {
-              return Expanded(
-                  child: ListView.builder(
-                  itemCount: state.brandsList.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      child: ListTile(
-                        shape: Border(
-                          bottom:
-                              BorderSide(width: 1, color: Color(0xff212121)),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => automobiles(
-                                    state.brandsList[index]["id"],
-                                    state.brandsList[index]["name"],
-                                    )),
-                          );
-                        },
-                        title: Text(state.brandsList[index]["name"]),
-                        leading: carLogo(30, state.brandsList[index]["logo"]),
-                        trailing: Icon(Icons.arrow_forward_ios,color: Color(0xff313131)),
-                      ),
-                    );
-                  }),
-              );
-            }
-            return Container();
-          },
+          ),
         ),
-            ],
-      ),
-      ),
-      /*
-      body: Container(
-        child: brandsList.isNotEmpty
-            ? ListView.builder(
-                itemCount: brandsList.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    child: ListTile(
-                      shape: Border(
-                        bottom: BorderSide(width: 1, color: Color(0xff212121)),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => automobiles(
-                                  brandsList[index]["id"],
-                                  brandsList[index]["name"],
-                                  automobilesList)),
-                        );
-                      },
-                      title: Text(brandsList[index]["name"]),
-                      leading: carLogo(30, brandsList[index]["logo"]),
-                    ),
+        body: Column(
+          children: [
+            BlocBuilder<NewPostBloc, NewPostState>(
+              builder: (context, state) {
+                if (state is NewPostStateLoading) {
+                  return Center(
+                    child: CircularProgressIndicator.adaptive(),
                   );
-                })
-            : Container(),
+                }
+                if (state is NewPostStateBrandsSearched) {
+                  return Expanded(
+                    child: ListView.builder(
+                        itemCount: state.searchedList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: ListTile(
+                              shape: Border(
+                                bottom: BorderSide(
+                                    width: 1, color: Color(0xff212121)),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => automobiles(
+                                            state.searchedList[index]["id"],
+                                            state.searchedList[index]["name"],
+                                          )),
+                                );
+                              },
+                              title: Text(state.searchedList[index]["name"]),
+                              leading: carLogo(
+                                  30, state.searchedList[index]["logo"]),
+                              trailing: Icon(Icons.arrow_forward_ios,
+                                  color: Color(0xff313131)),
+                            ),
+                          );
+                        }),
+                  );
+                }
+                if (state is NewPostStateLoadedBrands) {
+                  return Expanded(
+                    child: ListView.builder(
+                        itemCount: state.brandsList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: ListTile(
+                              shape: Border(
+                                bottom: BorderSide(
+                                    width: 1, color: Color(0xff212121)),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => automobiles(
+                                            state.brandsList[index]["id"],
+                                            state.brandsList[index]["name"],
+                                          )),
+                                );
+                              },
+                              title: Text(state.brandsList[index]["name"]),
+                              leading:
+                                  carLogo(30, state.brandsList[index]["logo"]),
+                              trailing: Icon(Icons.arrow_forward_ios,
+                                  color: Color(0xff313131)),
+                            ),
+                          );
+                        }),
+                  );
+                }
+                return Container();
+              },
+            ),
+          ],
+        ),
       ),
-      */
     );
   }
 }
