@@ -16,7 +16,14 @@ class posts_screen extends StatelessWidget{
 
     return Scaffold(
         appBar: AppBar(
+        bottom: PreferredSize(
+            child: Container(
+              color: const Color(0xff212121),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(4.0)),
             title: Text('Posts'),
+            centerTitle: false,
             ),
         body: userProfile.isAuthenticated! ?  Container() : userNotLogged_widget(context,screen_width,screen_height,information_text,Icons.grid_on_outlined),
         );

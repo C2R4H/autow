@@ -23,9 +23,13 @@ class account_screen_state extends State<account_screen> {
     return Scaffold(
       extendBodyBehindAppBar: widget.userProfile.isAuthenticated!,
       appBar: AppBar(
+        bottom: PreferredSize(
+            child: Container(
+              color: Color(0xff212121),
+              height: 1.0,
+            ),
+            preferredSize: Size.fromHeight(4.0)),
         title: Text('Account Screen'),
-        backgroundColor: Color(0xff121212).withOpacity(0.92),
-        elevation: 0,
       ),
       body: widget.userProfile.isAuthenticated!
           ? userLogged_screen(context, widget.userProfile, screen_height)

@@ -24,11 +24,11 @@ class AutoW extends StatelessWidget{
             accentColor: const Color(0xff51A05D),
             canvasColor: const Color(0xff121212),
             appBarTheme: AppBarTheme(
-                backgroundColor: const Color(0xff121212),
+                backgroundColor: Colors.black,
                 ),
             scaffoldBackgroundColor: Colors.black,
             bottomNavigationBarTheme: BottomNavigationBarThemeData(
-                backgroundColor: const Color(0xff121212),
+                backgroundColor: Colors.black,
                 ),
             ),
         home: screen_controller(),

@@ -18,3 +18,19 @@ Widget profilePicture(double size,userProfile) {
   child: Icon(Icons.person, size: size/2),
   );
 }
+
+Widget carLogo(double size,url) {
+  return CachedNetworkImage(
+    imageUrl: url,
+    imageBuilder: (context, imageProvider) => Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+      ),
+    ),
+    placeholder: (context, url) => CircularProgressIndicator.adaptive(),
+    errorWidget: (context, url, error) => Icon(Icons.error),
+  );
+}

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/notLogged_widget.dart';
 import '../../../midend/user_profile.dart';
 
+import 'add_post_screens/brands.dart';
+
 class add_post_screen extends StatelessWidget {
   UserProfile userProfile;
   add_post_screen(this.userProfile);
@@ -37,16 +39,21 @@ class add_post_screen extends StatelessWidget {
                       children: [
                         ListTile(
                           leading: Text(
-                            'Model*',
+                            'Brand*',
                             style: TextStyle(fontWeight: FontWeight.w300),
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
-                          tileColor: Color(0xff212121),
+                          tileColor: Color(0xff121212),
                           shape: Border(
-                              top: BorderSide(width: 1, color: Color(0xff313131),),
-                              bottom: BorderSide(width: 1, color: Color(0xff313131),),
+                              top: BorderSide(width: 1, color: Color(0xff212121),),
+                              bottom: BorderSide(width: 1, color: Color(0xff212121),),
                           ),
-                          onTap: () => print('working'),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => brands()),
+                                );
+                          },
                         ),
                         ListTile(
                           leading: Text(
@@ -56,9 +63,9 @@ class add_post_screen extends StatelessWidget {
                                 color: Color(0xffBABABA)),
                           ),
                           shape: Border(
-                              bottom: BorderSide(width: 1, color: Color(0xff313131),),
+                              bottom: BorderSide(width: 1, color: Color(0xff212121),),
                           ),
-                          tileColor: Color(0xff212121),
+                          tileColor: Color(0xff121212),
                           onTap: () => print('working'),
                         ),
                         ListTile(
@@ -68,10 +75,10 @@ class add_post_screen extends StatelessWidget {
                                 fontWeight: FontWeight.w300,
                                 color: Color(0xffBABABA)),
                           ),
-                          tileColor: Color(0xff212121),
+                          tileColor: Color(0xff121212),
                           onTap: () => print('working'),
                           shape: Border(
-                              bottom: BorderSide(width: 1, color: Color(0xff313131),),
+                              bottom: BorderSide(width: 1, color: Color(0xff212121),),
                           ),
                         ),
                         ListTile(
@@ -81,7 +88,7 @@ class add_post_screen extends StatelessWidget {
                                 fontWeight: FontWeight.w300,
                                 color: Color(0xffBABABA)),
                           ),
-                          tileColor: Color(0xff212121),
+                          tileColor: Color(0xff121212),
                           onTap: () => print('working'),
                           shape: Border(
                               bottom: BorderSide(width: 1, color: Color(0xff313131),),

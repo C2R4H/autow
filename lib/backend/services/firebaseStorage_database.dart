@@ -7,7 +7,7 @@ class FirebaseStorageMethods{
     String success = "";
 
     try{
-    Reference reference = storage.ref('profilePictures/').child('${userProfile.username}.jpg');
+    Reference reference = storage.ref('profilePictures/').child('${userProfile.uid}.jpg');
     if(userProfile.profileImage!=""){
       await reference.delete();
       await reference.putFile(imageFile).whenComplete(() async {

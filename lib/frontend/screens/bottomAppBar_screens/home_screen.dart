@@ -36,7 +36,10 @@ class home_screen_state extends State<home_screen> {
                 color: Colors.black,
                 child: Row(
                   children: [
-                    profilePicture(80,widget.userProfile,),
+                    profilePicture(
+                      80,
+                      widget.userProfile,
+                    ),
                     SizedBox(width: 10),
                     Text(
                       widget.userProfile.username!,
@@ -88,7 +91,8 @@ class home_screen_state extends State<home_screen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => add_post_screen(widget.userProfile)),
+                          builder: (context) =>
+                              add_post_screen(widget.userProfile)),
                     );
                   },
                   child: ListTile(
@@ -111,8 +115,7 @@ class home_screen_state extends State<home_screen> {
               Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () {
-                  },
+                  onTap: () {},
                   child: ListTile(
                     onTap: () async {
                       await CacheMethods.getCachedUserLoggedInState()
@@ -146,87 +149,122 @@ class home_screen_state extends State<home_screen> {
           ),
         ),
       ),
-      appBar: AppBar(
-        automaticallyImplyLeading:
-            false, // this will hide Drawer hamburger icon
-        toolbarHeight: MediaQuery.of(context).size.height / 6,
-        flexibleSpace: Container(
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              SafeArea(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
-                      icon: Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        scaffoldKey.currentState?.openDrawer();
-                      },
+      body: CustomScrollView(
+        slivers: [
+          /*SliverAppBar(
+            pinned: true,
+            floating: true,
+            snap:false,
+            automaticallyImplyLeading:
+                false, // this will hide Drawer hamburger icon
+            toolbarHeight: MediaQuery.of(context).size.height / 6,
+            flexibleSpace: Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SafeArea(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.zero,
+                          constraints: BoxConstraints(),
+                          icon: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            scaffoldKey.currentState?.openDrawer();
+                          },
+                        ),
+                        Text(
+                          'AutoW',
+                          style: TextStyle(
+                            fontSize: screen_height / 30,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Icon(Icons.menu, color: Color(0xff121212)),
+                      ],
                     ),
-                    Text(
-                      'AutoW',
-                      style: TextStyle(
-                        fontSize: screen_height / 30,
-                        color: Colors.white,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Colors.white,
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Search',
+                        prefixIcon: Icon(Icons.search),
                       ),
                     ),
-                    Icon(Icons.menu, color: Color(0xff121212)),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Colors.white,
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Search',
-                    prefixIcon: Icon(Icons.search),
+            ),
+          ),*/
+          SliverAppBar(
+            floating: true,
+            pinned: true,
+            snap: false,
+            centerTitle: true,
+            title: Text('AutoW'),
+            bottom: AppBar(
+            automaticallyImplyLeading:
+                false, // this will hide Drawer hamburger icon
+              title: Container(
+                width: double.infinity,
+                height: 40,
+                child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Colors.white,
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Search',
+                        hintStyle: TextStyle(color: Color(0xff212121)),
+                        prefixIcon: Icon(Icons.search,color: Color(0xff212121)),
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-      body: Container(
-        child: ListView(
-          padding: EdgeInsets.symmetric(
-            horizontal: screen_width / 30,
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    post_half_widget(context),
+                    post_half_widget(context),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    post_half_widget(context),
+                    post_half_widget(context),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    post_half_widget(context),
+                    post_half_widget(context),
+                  ],
+                ),
+              ],
+            ),
           ),
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                post_half_widget(context),
-                post_half_widget(context),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                post_half_widget(context),
-                post_half_widget(context),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                post_half_widget(context),
-                post_half_widget(context),
-              ],
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }

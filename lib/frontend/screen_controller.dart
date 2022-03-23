@@ -21,7 +21,7 @@ class screen_controller_state extends State<screen_controller> {
   final PageController _myPage = PageController(initialPage: 0);
   int _selectedIndex = 0;
 
-  void _onItemTapped(int index,state) {
+  void _onItemTapped(int index, state) {
     setState(() {
       if (index != 2) {
         _selectedIndex = index;
@@ -34,7 +34,8 @@ class screen_controller_state extends State<screen_controller> {
     } else if (index == 2) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => add_post_screen(state.userProfile)),
+        MaterialPageRoute(
+            builder: (context) => add_post_screen(state.userProfile)),
       );
     } else if (index == 3) {
       _myPage.jumpToPage(3);
@@ -64,10 +65,14 @@ class screen_controller_state extends State<screen_controller> {
                 ),
               ),
             );
-          } if (state is AuthBlocStateAuthenticated) {
-            return screenController(context, _selectedIndex, _myPage,state,_onItemTapped);
-          } if (state is AuthBlocStateUnaunthenticated) {
-            return screenController(context, _selectedIndex, _myPage,state,_onItemTapped);
+          }
+          if (state is AuthBlocStateAuthenticated) {
+            return screenController(
+                context, _selectedIndex, _myPage, state, _onItemTapped);
+          }
+          if (state is AuthBlocStateUnaunthenticated) {
+            return screenController(
+                context, _selectedIndex, _myPage, state, _onItemTapped);
           }
           return Container();
         },
@@ -77,60 +82,67 @@ class screen_controller_state extends State<screen_controller> {
   }
 }
 
-Widget screenController(context,int _selectedIndex, PageController _myPage, state, _onItemTapped) {
+Widget screenController(
+    context, int _selectedIndex, PageController _myPage, state, _onItemTapped) {
   return Scaffold(
     bottomNavigationBar: Theme(
       data: ThemeData(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      child: BottomNavigationBar(
-        backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        onTap: (nr) {
-          _onItemTapped(nr,state);
-        },
-        type: BottomNavigationBarType.fixed,
-        elevation: 0,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-            backgroundColor: const Color(0xff424242),
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(top: BorderSide(color: const Color(0xff212121), width: 1.0))),
+        child: BottomNavigationBar(
+          backgroundColor:
+              Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+          onTap: (nr) {
+            _onItemTapped(nr, state);
+          },
+          type: BottomNavigationBarType.fixed,
+          elevation: 0,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+              backgroundColor: const Color(0xff424242),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite_outline),
+              label: 'Favorites',
+              backgroundColor: const Color(0xff212121),
+              activeIcon: Icon(Icons.favorite),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add_box, color: Color(0xff51A0D5)),
+              label: 'New Post',
+              backgroundColor: const Color(0xff212121),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.mail_outlined),
+              label: 'Messages',
+              backgroundColor: const Color(0xff212121),
+              activeIcon: Icon(Icons.mail),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.grid_on_outlined),
+              label: 'Posts',
+              backgroundColor: const Color(0xff212121),
+            ),
+          ],
+          selectedLabelStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: MediaQuery.of(context).size.height / 55,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            label: 'Favorites',
-            backgroundColor: const Color(0xff212121),
-            activeIcon: Icon(Icons.favorite),
+          unselectedLabelStyle: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: MediaQuery.of(context).size.height / 55,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_box,color: Color(0xff51A0D5)),
-            label: 'New Post',
-            backgroundColor: const Color(0xff212121),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail_outlined),
-            label: 'Messages',
-            backgroundColor: const Color(0xff212121),
-            activeIcon: Icon(Icons.mail),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_on_outlined),
-            label: 'Posts',
-            backgroundColor: const Color(0xff212121),
-          ),
-        ],
-        selectedLabelStyle: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: MediaQuery.of(context).size.height / 55,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey[600],
         ),
-        unselectedLabelStyle: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: MediaQuery.of(context).size.height / 55,
-        ),
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey[600],
       ),
     ),
     body: PageView(
