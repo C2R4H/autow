@@ -3,38 +3,36 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../brands_model.dart';
 import '../../automobiles_model.dart';
+import '../../newPost_model.dart';
 
 part 'newPost_state.dart';
 part 'newPost_event.dart';
 
 class NewPostBloc extends Bloc<NewPostEvent, NewPostState> {
   NewPostBloc() : super(NewPostState()) {
+    NewPost_model newPost_model = NewPost_model();
     //List enginesList;
     Brands brands_list = Brands();
     Automobiles automobiles_list = Automobiles();
 
     List brandList = [];
+    List modelsList = [];
 
-
-    on<NewPostEventLoadBrands>((event, emit) async {
+    on<NewPostEventLoadData>((event, emit) async {
       emit(NewPostStateLoading());
       await brands_list.readBrands().then((brands) async {
         if (brands != []) {
           brandList = brands;
-          emit(NewPostStateLoadedBrands(brands));
+          await automobiles_list.readBrands().then((models) {
+            if (models != []) {
+              emit(NewPostStateLoadedData(brands, models));
+              modelsList = [];
+            } else {
+              emit(NewPostStateError('Failed to load models list'));
+            }
+          });
         } else {
-          emit(NewPostStateError('Failed to load list'));
-        }
-      });
-    });
-
-    on<NewPostEventLoadModels>((event, emit) async {
-      emit(NewPostStateLoading());
-      await automobiles_list.readBrands().then((models) {
-        if (models != []) {
-          emit(NewPostStateLoadedModels(models));
-        } else {
-          emit(NewPostStateError('Failed to load list'));
+          emit(NewPostStateError('Failed to load brands list'));
         }
       });
     });
@@ -64,8 +62,20 @@ class NewPostBloc extends Bloc<NewPostEvent, NewPostState> {
         }
       } else {
         searchResults = brandList;
-        emit(NewPostStateLoadedBrands(searchResults));
+        emit(NewPostStateLoadedData(searchResults, modelsList));
       }
+    });
+
+    on<NewPostEventBrandChoose>((event, emit) {
+      print(event.brandID);
+      print(event.brand);
+      emit(NewPostStateAddData(choosedBrand: event.brandID,choosedBrandName: event.brand));
+    });
+    on<NewPostEventModelChoose>((event, emit) {
+      newPost_model.model = event.model;
+    });
+    on<NewPostEventYearChoose>((event, emit) {
+      newPost_model.year = event.year;
     });
   }
 }

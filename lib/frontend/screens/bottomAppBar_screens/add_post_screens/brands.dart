@@ -8,6 +8,9 @@ import '../../../widgets/profilePicture_widget.dart';
 import 'automobiles.dart';
 
 class brands extends StatefulWidget {
+  NewPostBloc _newPostBloc;
+  brands(@required this._newPostBloc);
+
   brands_state createState() => brands_state();
 }
 
@@ -16,16 +19,9 @@ class brands_state extends State<brands> {
   Automobiles automobiles_model = Automobiles();
   List automobilesList = [];
 
-  void initState() {
-    _newPostBloc.add(NewPostEventLoadBrands());
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _newPostBloc,
-      child: Scaffold(
+      return  Scaffold(
         appBar: AppBar(
           title: Container(
             width: double.infinity,
@@ -51,6 +47,7 @@ class brands_state extends State<brands> {
         body: Column(
           children: [
             BlocBuilder<NewPostBloc, NewPostState>(
+                bloc: widget._newPostBloc,
               builder: (context, state) {
                 if (state is NewPostStateLoading) {
                   return Center(
@@ -69,14 +66,9 @@ class brands_state extends State<brands> {
                                     width: 1, color: Color(0xff212121)),
                               ),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => automobiles(
-                                            state.searchedList[index]["id"],
-                                            state.searchedList[index]["name"],
-                                          )),
-                                );
+                                print('working');
+                                _newPostBloc.add(NewPostEventBrandChoose(state.brandsList[index]["name"],state.brandsList[index]["id"]));
+                                Navigator.pop(context);
                               },
                               title: Text(state.searchedList[index]["name"]),
                               leading: carLogo(
@@ -88,7 +80,7 @@ class brands_state extends State<brands> {
                         }),
                   );
                 }
-                if (state is NewPostStateLoadedBrands) {
+                if (state is NewPostStateLoadedData) {
                   return Expanded(
                     child: ListView.builder(
                         itemCount: state.brandsList.length,
@@ -100,14 +92,10 @@ class brands_state extends State<brands> {
                                     width: 1, color: Color(0xff212121)),
                               ),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => automobiles(
-                                            state.brandsList[index]["id"],
-                                            state.brandsList[index]["name"],
-                                          )),
-                                );
+                                _newPostBloc.add(NewPostEventBrandChoose(state.brandsList[index]["name"],state.brandsList[index]["id"]));
+                                print('working');
+                                print(state.choosedBrand);
+                                Navigator.pop(context);
                               },
                               title: Text(state.brandsList[index]["name"]),
                               leading:
@@ -124,7 +112,6 @@ class brands_state extends State<brands> {
             ),
           ],
         ),
-      ),
     );
   }
 }
